@@ -10,7 +10,6 @@ public class App
     	
     	//Sidacoja.input("C:/Users/Chuck/names.csv");
     	//Sidacoja.input("C:/users/chuck/rowset.xml");
-    	/*
     	Sidacoja.input("C:/users/chuck/inputFile1.json");
     	Sidacoja.inputType("JSON");
     	
@@ -24,7 +23,7 @@ public class App
     	Sidacoja.outputType("JSON");
     	
     	Sidacoja.fire();
-    	*/
+    	
     	//console(Sidacoja.getSidacoja().toString());
     		
     }

@@ -14,7 +14,7 @@ public class Row implements Comparable<Row> {
 
 	private int number;
 	private List<Cell> list; //= new ArrayList();
-	private boolean selected = true;
+	private boolean selected = false;
 	private String sortKey = ""; 
 	
 	public int getNumber() {

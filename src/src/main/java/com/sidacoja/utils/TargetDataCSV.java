@@ -51,12 +51,12 @@ public class TargetDataCSV implements TargetData{
         		bw.newLine();
         		firstIteration = false;
         	} 
+        	for(String value:values) {
+        		System.out.print(value+",");
+        		bw.write(value+",");
+        	}
         	if(row.isSelected()) {
-            	for(String value:values) {
-            		//System.out.print(value+",");
-            		bw.write(value+",");
-            	}
-        		//System.out.println("");
+        		System.out.println("");
         		bw.newLine();
         	}
         	} catch(IOException ioe) {
@@ -73,16 +73,12 @@ public class TargetDataCSV implements TargetData{
 		status = "close failed on output: "+file;
 	}
 
-	console("CSV written successfully...\n");
-	return status;
+		return status;
 		
 	}
 	
 	public boolean isSelected(String label, String[] columns) {
 	
-		if(columns==null) {
-			return true;
-		}
 		for(int m=0;m<columns.length;m++) {
 			if(label.equals(columns[m])) {
 				return true;
@@ -92,10 +88,5 @@ public class TargetDataCSV implements TargetData{
 		return false;
 	
 	}
-	
-	
-    public void console(String sz) {
-    	System.out.println(sz);
-    }
 	
 } //end class

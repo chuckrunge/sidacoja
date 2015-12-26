@@ -1,6 +1,6 @@
 package com.sidacoja.utils;
 
-import java.util.LinkedHashMap;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -13,7 +13,7 @@ public class RowCache {
 
 	RowCache(){}
 	
-	Map<String,String> simpleAttr = new LinkedHashMap<String,String>();
+	Map<String,String> simpleAttr = new HashMap<String,String>();
 
 	List<Row> list;
 
@@ -25,31 +25,6 @@ public class RowCache {
 		this.list = list;
 	}
 	
-	public String[] getLabels(String[] columns) {
-		int i = 0;
-		List<Row> listRows = getList();
-		Row row = listRows.get(0);
-		List<Cell> listCells = row.getList();
-		String[] selected = new String[columns.length];
-        for(Cell cell: listCells) {
-        	if(isSelected(cell.getLabel(), columns)) {
-        		selected[i++] = cell.getLabel();
-        	}
-        }
-		return selected;
-	}
-
-	public int countSelected() {
-		int i = 0;
-		List<Row> listRows = getList();
-        for(Row row: listRows) {
-        	if(row.isSelected()) {
-        		i++;
-        	}
-        }
-		return i;
-	}
-
 	public void display() {
     	List<Row> listRows = getList();
     	console(listRows.size()+" rows in cache");
@@ -61,22 +36,7 @@ public class RowCache {
         	}
         }
 	}
-
-	public boolean isSelected(String label, String[] columns) {
-
-		if(columns == null) {
-			return true;
-		}
-		for(int m=0;m<columns.length;m++) {
-			if(label.equals(columns[m])) {
-				return true;
-			} //end if
-		} //end criteria loop
-
-		return false;
 	
-	}
-
 	public static void console(String sz) {
 		System.out.println(sz);
 	}

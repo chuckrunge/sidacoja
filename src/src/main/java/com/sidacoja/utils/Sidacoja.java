@@ -7,57 +7,54 @@ import java.util.List;
 public class Sidacoja {
 
 	Sidacoja(){}
-	private String input;
-	private String inputType;
-	private String[] columns = null;
-	private String[] sequencers = null;
-	private List<String[]> filters = new ArrayList<String[]>();
-	private String output;
-	private String outputType;
-	private Sidacoja sdcj;
+	private static String input;
+	private static String inputType;
+	private static String[] columns;
+	private static String[] sequencers = null;
+	private static List<String[]> filters = new ArrayList<String[]>();
+	private static String output;
+	private static String outputType;
+	private static Sidacoja sdcj;
 	
-	public Sidacoja getSidacoja() {
+	public static Sidacoja getSidacoja() {
 		if(sdcj == null) {
 			sdcj = new Sidacoja();
 		}
 		return sdcj;
 	}
 	
-   	public Sidacoja process(){
+   	public static Sidacoja process(){
    		return getSidacoja();
    	}
-   	public Sidacoja input(String input){
-   		this.input = input;
+   	public static Sidacoja input(String input){
+   		Sidacoja.input = input;
    		return getSidacoja();
    	}
-   	public Sidacoja inputType(String inputType){
-   		this.inputType = inputType;
+   	public static Sidacoja inputType(String inputType){
+   		Sidacoja.inputType = inputType;
    		return getSidacoja();
    	}
-   	public Sidacoja columns(String[] columns){
-   		this.columns = columns;
+   	public static Sidacoja columns(String[] columns){
+   		Sidacoja.columns = columns;
    		return getSidacoja();
    	}
-   	public Sidacoja sequence(String[] sequencers){
-   		this.sequencers = sequencers;
+   	public static Sidacoja sequence(String[] sequencers){
+   		Sidacoja.sequencers = sequencers;
    		return getSidacoja();
    	}
-   	public Sidacoja addFilter(String[] criterion){
-   		this.filters.add(criterion);
+   	public static Sidacoja addFilter(String[] criterion){
+   		Sidacoja.filters.add(criterion);
    		return getSidacoja();
    	}
-   	public Sidacoja output(String output){
-   		this.output = output;
+   	public static Sidacoja output(String output){
+   		Sidacoja.output = output;
    		return getSidacoja();
    	}
-   	public Sidacoja outputType(String outputType){
-   		this.outputType = outputType;
+   	public static Sidacoja outputType(String outputType){
+   		Sidacoja.outputType = outputType;
    		return getSidacoja();
    	}
-   	public String[] getColumns(){
-   		return this.columns;
-   	}
-   	public RowCache fire(){
+   	public static Sidacoja fire(){
    		RowCache cache = new RowCache();
    		String status = null;
 
@@ -87,15 +84,16 @@ public class Sidacoja {
    		
    		//select and filter - mark row and cells for use
    		if(!filters.isEmpty()) {
-   			cache = selectAndFilter(cache, filters);
+   			selectAndFilter(cache, filters);
    		}
    		
    		//sort on selected columns
    		if(sequencers != null) {
-   			cache = sequence(cache, sequencers);
+   			RowCache sortedCache = sequence(cache, sequencers);
+   			cache = sortedCache;
    		}
 
-  		switch(outputType.toUpperCase()) {
+  		switch(outputType) {
    		case "CSV":
    			TargetDataCSV tdc = new TargetDataCSV(); 
    			status = tdc.processOutput(cache, columns, output);
@@ -115,14 +113,13 @@ public class Sidacoja {
    		default:
    			break;
    		}
-   		return cache;
+   		return getSidacoja();
    	}
    	
-    public RowCache selectAndFilter(RowCache cache, List<String[]> filters) {
+    public static RowCache selectAndFilter(RowCache cache, List<String[]> filters) {
     	List<Row> rows = cache.getList();
     	List<Cell> cells = null;
     	for(Row row: rows) {
-    		row.setSelected(false);
     		cells = null;
     		cells = row.getList();
     		for(Cell cell: cells) {
@@ -134,13 +131,15 @@ public class Sidacoja {
     					if(cell.getLabel().equals(filter[1])) {
     						//cell label matches filter!
     						if(cell.getValue().equals(filter[3])) {
+    							console(cell.getValue()+" equals "+filter[3]);
     							//cell value matches filter
     							cell.setSelected(true);
     							if(filter[2].equals("EQ")){
-     								//select row
+    								console("filter equals "+filter[2]);
+    								//select row
     								row.setSelected(true);
     							} else {
-    								console("filter not EQ ? "+filter[2]);
+    								console("filter not equals "+filter[2]);
     								//do not select row
     							}
     						} //end if
@@ -157,10 +156,9 @@ public class Sidacoja {
     	return cache;
     }
     
-    public RowCache sequence(RowCache cache, String[] sz) {    	
+    public static RowCache sequence(RowCache cache, String[] sz) {    	
     	List<Row> rows = cache.getList();
     	StringBuffer sb = new StringBuffer();
-    	int index = 0;
     	for(Row row: rows) {
     		List<Cell> cells = row.getList();
    			for(String key: sequencers) {
@@ -171,8 +169,7 @@ public class Sidacoja {
     			} //end cell loop
     		} //end sequencer loop
     		row.setSortKey(sb.toString());
-    		index = rows.indexOf(row);
-    		rows.set(index,row);
+    		console("sortKey: "+sb.toString());
     		sb.delete(0,sb.length());
     	} //end row loop
     	
@@ -182,14 +179,14 @@ public class Sidacoja {
     	return cache;
     }
 
-    public void displayRowList(List<Row> szList) {
+    public static void displayRowList(List<Row> szList) {
 
     	for(Row row: szList) {
     		console(row.toString());
     	}
     } 
    	    
-    public void console(String sz) {
+    public static void console(String sz) {
     	System.out.println(sz);
     }
 
@@ -199,37 +196,9 @@ public class Sidacoja {
 				"input="+input+","+
 				"inputType="+inputType+","+
 				"columns="+columns+","+
-				"filters="+filters+","+
 				"output="+output+","+
 				"outputType=" + outputType +
 				"]";
-	}
-
-	public int countLabels(RowCache cache) {
-		int i = 0;
-		List<Row> listRows = cache.getList();
-		List<Cell> listCells = listRows.get(0).getList();
-        for(Cell cell: listCells) {
-        	if(isSelected(cell.getLabel(), columns)) {
-        		i++;
-        	}
-        }
-		return i;
-	}
-
-	public boolean isSelected(String label, String[] columns) {
-
-		if(columns == null) {
-			return true;
-		}
-		for(int m=0;m<columns.length;m++) {
-			if(label.equals(columns[m])) {
-				return true;
-			} //end if
-		} //end criteria loop
-
-		return false;
-	
 	}
 		
 }
