@@ -35,11 +35,11 @@ public class AppTest
 
     public void testApp02()
     {
-    	Sidacoja sdjc = new Sidacoja();
-    	sdjc.input("./resources/Crimes2014.xls"); 
-    	sdjc.inputType("XLS");
+    	Sidacoja sdcj = new Sidacoja();
+    	sdcj.input("./resources/Crimes2014.xls"); 
+    	sdcj.inputType("XLS");
 
-    	sdjc.columns(new String[]{
+    	sdcj.columns(new String[]{
 				//"ID",
     			"Case Number",	
     			"Date",	
@@ -52,33 +52,36 @@ public class AppTest
     			"Updated On"
     	});
 
-    	sdjc.sequence(new String[] {
+    	sdcj.sequence(new String[] {
     			"Case Number", "Arrest"
     	});
     	
-    	sdjc.addFilter(new String[]{"OR", "Primary Type","EQ","THEFT"});
-    	sdjc.addFilter(new String[]{"OR", "Primary Type","EQ","BATTERY"});
-    	sdjc.addFilter(new String[]{"OR", "Primary Type","EQ","BURGLARY"});
+    	sdcj.addFilter(new String[]{"OR", "Primary Type","EQ","THEFT"});
+    	sdcj.addFilter(new String[]{"OR", "Primary Type","EQ","BATTERY"});
+    	sdcj.addFilter(new String[]{"OR", "Primary Type","EQ","BURGLARY"});
     	
-    	sdjc.output("./sidacoja.XLS");
-    	sdjc.outputType("XLS");
-    	
-    	RowCache cache = sdjc.fire();
-    	
+    	sdcj.output("./sidacoja.XLS");
+    	sdcj.outputType("XLS");
+ 
+    	RowCache cache = new RowCache();
+    	try {
+    		cache = sdcj.fire();
+    	} catch(Exception e) {
+    		console(e.getMessage());
+    	}
+
     	//number of data rows equals number of rows in cache
         assertTrue( 11363 == cache.getList().size() );
 
         //number of data rows written equals number of rows selected
-        assertTrue( 5319 == cache.countSelected() );
+        assertTrue( 5319 == cache.countSelected() ); 
         
-        //number of columns selected for output
-        assertTrue(7 == sdjc.countLabels(cache));
+        //number of columns selected for output 7
+        assertTrue(7 == sdcj.countLabels(cache));
         
-        //number of columns selected for output
-        assertTrue(7 == cache.getLabels(sdjc.getColumns()).length);
+        //number of columns selected for output 7
+        assertTrue(7 == cache.getLabels(sdcj.getColumns()).length);
         
-        // how to test sort?
-
     }
 
     /**
@@ -99,15 +102,20 @@ public class AppTest
     			"First Name","Last Name","UserID","Date"
     	});
 
-    	sdcj.addFilter(new String[]{"OR", "Last Name","EQ","Runge"});
+    	sdcj.addFilter(new String[]{"OR", "Last Name","EQ","Rugher"});
     	
     	sdcj.output("./sidacoja.csv");
     	sdcj.outputType("CSV");
     	
-    	RowCache cache = sdcj.fire();
+    	RowCache cache = new RowCache();
+    	try {
+    		cache = sdcj.fire();
+    	} catch(Exception e) {
+    		console(e.getMessage());
+    	}
     	
     	//number of data rows equals number of rows in cache
-        assertTrue(3 == cache.getList().size() );
+        assertTrue(9 == cache.getList().size() );
 
         //number of data rows written equals number of rows selected
         assertTrue(3 == cache.countSelected() );
@@ -143,7 +151,12 @@ public class AppTest
     	sdcj.output("./sidacoja.xml");
     	sdcj.outputType("XML");
     	
-    	RowCache cache = sdcj.fire();
+    	RowCache cache = new RowCache();
+    	try {
+    		cache = sdcj.fire();
+    	} catch(Exception e) {
+    		console(e.getMessage());
+    	}
     	
     	//console(Sidacoja.getSidacoja().toString());
     	//number of data rows equals number of rows in cache
@@ -180,7 +193,12 @@ public class AppTest
     	sdcj.output("./sidacoja.json");
     	sdcj.outputType("JSON");
     	
-    	RowCache cache = sdcj.fire();
+    	RowCache cache = new RowCache();
+    	try {
+    		cache = sdcj.fire();
+    	} catch(Exception e) {
+    		console(e.getMessage());
+    	}
     	
     	//number of data rows equals number of rows in cache
         assertTrue(3 == cache.getList().size() );

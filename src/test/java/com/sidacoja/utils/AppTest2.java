@@ -35,26 +35,31 @@ public class AppTest2
 
     public void testApp02()
     {
-    	Sidacoja sdjc = new Sidacoja();
-    	sdjc.input("./resources/Crimes2014.xls"); 
-    	sdjc.inputType("XLS");
+    	Sidacoja sdcj = new Sidacoja();
+    	sdcj.input("./resources/Crimes2014.xls"); 
+    	sdcj.inputType("XLS");
 
-    	sdjc.output("./sidacoja.XLS");
-    	sdjc.outputType("XLS");
+    	sdcj.output("./sidacoja.XLS");
+    	sdcj.outputType("XLS");
     	
-    	RowCache cache = sdjc.fire();
+    	RowCache cache = new RowCache();
+    	try {
+    		cache = sdcj.fire();
+    	} catch(Exception e) {
+    		console(e.getMessage());
+    	}
     	
     	//number of data rows equals number of rows in cache
-        //assertTrue( 11363 == cache.getList().size() );
+        assertTrue( 11363 == cache.getList().size() );
 
         //number of data rows written equals number of rows selected
-        //assertTrue( 5319 == cache.countSelected() );
+        assertTrue( 11363 == cache.countSelected() );
         
         //number of columns selected for output
-        //assertTrue(7 == sdjc.countLabels(cache));
+        assertTrue( 11 == sdcj.countLabels(cache));
         
         //number of columns selected for output
-        //assertTrue(7 == cache.getLabels(sdjc.getColumns()).length);
+        assertTrue( 11 == cache.getLabels(sdcj.getColumns()).length);
         
         // how to test sort?
         assert(true);
@@ -73,22 +78,25 @@ public class AppTest2
     	sdcj.output("./sidacoja.csv");
     	sdcj.outputType("CSV");
     	
-    	RowCache cache = sdcj.fire();
-    	
+    	RowCache cache = new RowCache();
+    	try {
+    		cache = sdcj.fire();
+    	} catch(Exception e) {
+    		console(e.getMessage());
+    	}
+    	    	
     	//number of data rows equals number of rows in cache
-        //assertTrue(3 == cache.getList().size() );
+        assertTrue(9 == cache.getList().size() );
 
         //number of data rows written equals number of rows selected
-        //assertTrue(3 == cache.countSelected() );
+        assertTrue(9 == cache.countSelected() );
         
         //number of columns selected for output
-        //assertTrue(4 == sdcj.countLabels(cache));
+        assertTrue(4 == sdcj.countLabels(cache));
         
         //number of columns selected for output
-        //assertTrue(4 == cache.getLabels(sdcj.getColumns()).length);
+        assertTrue(4 == cache.getLabels(sdcj.getColumns()).length);
         
-        // how to test sort?
-    	assertTrue(true);
     }
 
     /**
@@ -103,19 +111,24 @@ public class AppTest2
     	sdcj.output("./sidacoja.xml");
     	sdcj.outputType("XML");
     	
-    	RowCache cache = sdcj.fire();
-    	
+    	RowCache cache = new RowCache();
+    	try {
+    		cache = sdcj.fire();
+    	} catch(Exception e) {
+    		console(e.getMessage());
+    	}
+
     	//number of data rows equals number of rows in cache
-        //assertTrue(3 == cache.getList().size() );
+        assertTrue(3 == cache.getList().size() );
 
         //number of data rows written equals number of rows selected
-        //assertTrue(2 == cache.countSelected() );
+        assertTrue(3 == cache.countSelected() );
         
         //number of columns desired
-        //assertTrue(3 == sdcj.countLabels(cache));
+        assertTrue(5 == sdcj.countLabels(cache));
         
         //number of columns in output
-        //assertTrue(3 == cache.getLabels(sdcj.getColumns()).length);
+        assertTrue(5 == cache.getLabels(sdcj.getColumns()).length);
         
         // how to test sort?
     	assertTrue(true);
@@ -133,26 +146,29 @@ public class AppTest2
     	sdcj.output("./sidacoja.json");
     	sdcj.outputType("JSON");
     	
-    	RowCache cache = sdcj.fire();
+    	RowCache cache = new RowCache();
+    	try {
+    		cache = sdcj.fire();
+    	} catch(Exception e) {
+    		console(e.getMessage());
+    	}
     	
     	//number of data rows equals number of rows in cache
-        //assertTrue(3 == cache.getList().size() );
+        assertTrue(3 == cache.getList().size() );
 
         //number of data rows written equals number of rows selected
-        //assertTrue(2 == cache.countSelected() );
-        
+        assertTrue(3 == cache.countSelected() );
+    	
         //number of columns desired
-        //assertTrue(3 == sdcj.countLabels(cache));
+        assertTrue(3 == sdcj.countLabels(cache));
         
         //number of columns in output
-        //assertTrue(3 == cache.getLabels(sdcj.getColumns()).length);
+        assertTrue(3 == cache.getLabels(sdcj.getColumns()).length);
         
-        // how to test sort?
-    	assertTrue(true);
     }
 	    
-public void console(String sz) {
-	System.out.println(sz);
-}
+    public void console(String sz) {
+    	System.out.println(sz);
+    }
 
 } //end class

@@ -34,11 +34,11 @@ public class Row implements Comparable<Row> {
 	};
 	
 	public boolean isSelected() {
-		return selected;
+		return this.selected;
 	}
 
-	public void setSelected(boolean selected) {
-		this.selected = selected;
+	public void setSelected(boolean selectRow) {
+		this.selected = selectRow;
 	}
 
 	public String getSortKey() {

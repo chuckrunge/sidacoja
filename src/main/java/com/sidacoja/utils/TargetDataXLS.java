@@ -4,9 +4,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-
-import java.util.Date;
-import java.util.HashMap;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,15 +14,17 @@ import java.util.Set;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.CreationHelper;
 import org.apache.poi.ss.usermodel.Row;
-import org.omg.CORBA.DATA_CONVERSION;
-import java.lang.Integer;
 
 public class TargetDataXLS implements TargetData {
 
+	@SuppressWarnings("deprecation")
 	public String processOutput(RowCache cache, String[] columns, String output) {
 
 		HSSFWorkbook workbook = new HSSFWorkbook();
+		CreationHelper createHelper = workbook.getCreationHelper();
 		HSSFSheet sheet = workbook.createSheet("Sheet #1");
 
 		Map<String, Object[]> data = new LinkedHashMap<String, Object[]>();
@@ -42,14 +43,25 @@ public class TargetDataXLS implements TargetData {
 		    for (Object obj : objArr) {
 		    	if(obj != null) {
 		    		Cell cell = row.createCell(cellnum++);
-		    		if(obj instanceof Date)
-		    			cell.setCellValue((Date)obj);
-		    		else if(obj instanceof Boolean)
-		    			cell.setCellValue((Boolean)obj);
-		    		else if(obj instanceof String)
+		    		if(isBoolean((String) obj)) {
+		    			cell.setCellValue(Boolean.valueOf((String) obj));
+		    		}
+		    		else if(isNumber((String) obj)) {
+		    			cell.setCellValue(Double.valueOf((String) obj));
+		    		}
+		    		else if(isDate((String) obj)) {
+		    			CellStyle cellStyle = workbook.createCellStyle();
+		    			cellStyle.setDataFormat(
+		    			createHelper.createDataFormat().getFormat("m/d/yy h:mm"));
+		    			cell = row.createCell(1);
+		    			Calendar cal = setCalendar(obj);
+		    			cell.setCellValue(cal.getTime());
+		    			cell.setCellStyle(cellStyle);
+		    			console("date value: "+cal.toString());
+		    		}
+		    		else
 		    			cell.setCellValue((String)obj);
-		    		else if(obj instanceof Double)
-		    			cell.setCellValue((Double)obj);
+
 		    	}
 		    } //end for
 		} //end for
@@ -116,4 +128,90 @@ public class TargetDataXLS implements TargetData {
 		return false;
 	
 	}
+	
+    public void console(String sz) {
+    	System.out.println(sz);
+    }
+
+    
+    public boolean isDate(String sz) {
+        if(sz.isEmpty()) {
+            return false;
+        }
+        int slash1 = sz.indexOf('/');
+        int slash2 = sz.indexOf(slash1+1,'/');
+        
+        if(slash2 == -1) {
+        	return false;
+        }
+        return true;
+    }
+    
+    public boolean isBoolean(String sz) {
+        if(sz.isEmpty()) {
+            return false;
+        }
+        if("false".equals(sz)) {
+        	return true;
+        }
+        if("true".equals(sz)) {
+        	return true;
+        }
+        return false;
+    }
+
+    public boolean isNumber(String sz) {
+        
+        if(sz.isEmpty()) {
+            return false;
+        }
+
+        char [] charNumber = sz.toCharArray();
+        for(int i =0 ; i<charNumber.length ;i++) {
+
+        	char c = charNumber[i];
+        	switch (c) {
+        	case '.':
+        	case '0':
+        	case '1':
+        	case '2':
+        	case '3':
+        	case '4':
+        	case '5':
+        	case '6':
+        	case '7':
+        	case '8':
+        	case '9':
+        		//OK;
+        		break;
+        	default:
+        		return false;
+        };
+        
+        };
+        
+        return true;
+    
+    }
+
+    public Calendar setCalendar(Object obj) {
+    	
+    	String szObj = (String) obj;
+    	console("setCalendar: "+obj);
+    	int slash1 = szObj.indexOf('/');
+    	int slash2 = szObj.indexOf(slash1+1, '/');
+
+    	int year  = Integer.parseInt(szObj.substring( slash2 ));
+    	console("year: "+year);
+		int month = Integer.parseInt(szObj.substring( 0, slash1 ));
+		console("month: "+month);
+		int day  = Integer.parseInt(szObj.substring( slash1, slash2 ));
+		console("day: "+day);
+		
+		Calendar cal = new GregorianCalendar();
+		cal.set(year, month, day);
+		
+		return cal;
+		
+    }
 }

@@ -26,22 +26,42 @@ public class RowCache {
 	}
 	
 	public String[] getLabels(String[] columns) {
+		boolean isColumnsNull = false;
+		String[] selected = new String[0];
+		if(columns == null) {
+			isColumnsNull = true;
+		} 
 		int i = 0;
 		List<Row> listRows = getList();
+		if(listRows == null)
+			return selected;
 		Row row = listRows.get(0);
 		List<Cell> listCells = row.getList();
-		String[] selected = new String[columns.length];
+		if(isColumnsNull) {
+			selected = new String[listCells.size()];
+		} else {
+			selected = new String[columns.length];
+		}	
+		
         for(Cell cell: listCells) {
-        	if(isSelected(cell.getLabel(), columns)) {
+        	if(isColumnsNull) {
         		selected[i++] = cell.getLabel();
+        	} else {
+        		if(isSelected(cell.getLabel(), columns)) {
+        			selected[i++] = cell.getLabel();
+        		}
         	}
         }
+        
 		return selected;
+	
 	}
 
 	public int countSelected() {
 		int i = 0;
 		List<Row> listRows = getList();
+		if(listRows == null)
+			return 0;
         for(Row row: listRows) {
         	if(row.isSelected()) {
         		i++;

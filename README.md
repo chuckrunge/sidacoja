@@ -1,6 +1,9 @@
 # sidacoja
 A Simple Data Conversion for Java
+
 Copyright (C) 2015  Chuck Runge
+Lombard, IL.
+CGRunge001@GMail.com
 
 This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.
 
@@ -83,4 +86,22 @@ An example using all of the above, both required and optional, is shown below.
     	sdjc.outputType("XLS");
     	
     	RowCache cache = sdjc.fire();
- 
+
+		
+ADVANCED DATA SELECTION
+
+Basic AND / OR logic is supported.  OR begins a new criterion.  AND ties a criterion to the previous one.  
+So AND will string multiple criteria together, and they all must be true.
+
+Example:
+    	sdjc.addFilter(new String[]{"OR", "Last Name","EQ","Smith"});
+    	sdjc.addFilter(new String[]{"AND", "First Name","EQ","John"});
+    	sdjc.addFilter(new String[]{"AND", "City","EQ","Johnsonville"});
+
+EQ (equals) is the most specific way to identify rows, but NE (not equal) is also supported.  
+If excluding rows is simpler, NE is also available.
+
+Example:
+    	sdjc.addFilter(new String[]{"OR", "Last Name","EQ","Smith"});
+    	sdjc.addFilter(new String[]{"AND", "First Name","EQ","John"});
+    	sdjc.addFilter(new String[]{"AND", "City","NE","Johnsonville"});

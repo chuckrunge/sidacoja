@@ -4,7 +4,7 @@
 
   <groupId>com.sidacoja</groupId>
   <artifactId>sidacoja-utils</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>0.0.6-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <name>sidacoja-utils</name>
@@ -60,7 +60,8 @@
     	<artifactId>maven-jar-plugin</artifactId>
     	<version>2.3.2</version>
     	<configuration>
-        	<finalName>utils</finalName>                   
+    		<!-- sidacoja-utils-0.0.6-SNAPSHOT -->
+        	<finalName>${artifactId}.${version}</finalName>                   
     	</configuration>
 	  </plugin>   
     </plugins>
