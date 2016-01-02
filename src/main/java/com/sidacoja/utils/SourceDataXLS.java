@@ -6,11 +6,14 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.format.CellDateFormatter;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 
@@ -63,8 +66,24 @@ public class SourceDataXLS implements SourceData {
 		                    break;
 		                case Cell.CELL_TYPE_NUMERIC:
 		                    //System.out.print(cell.getNumericCellValue() + "\t\t");
-		                    sCell.setValue(Double.toString(cell.getNumericCellValue()));
-		                    sCell.setDataType("Double");
+		                    double dv = cell.getNumericCellValue();
+		                    if (HSSFDateUtil.isCellDateFormatted(cell)) {
+		                        Date date = HSSFDateUtil.getJavaDate(dv);
+		                        String dateFmt = cell.getCellStyle().getDataFormatString();
+		                        
+		                        /* strValue = new SimpleDateFormat(dateFmt).format(date); - won't work as 
+		                        Java fmt differs from Excel fmt. If Excel date format is mm/dd/yyyy, Java 
+		                        will always be 00 for date since "m" is minutes of the hour.*/
+		                        String strValue = new CellDateFormatter(dateFmt).format(date); 
+		                        // takes care of idiosyncrasies of Excel
+		                        
+			                    sCell.setValue(strValue);
+		                    	sCell.setDataType("Date");
+		                    	//console(strValue);
+		                    } else {
+			                    sCell.setValue(Double.toString(cell.getNumericCellValue()));
+		                    	sCell.setDataType("Double");
+		                    }
 		                    break;
 		                case Cell.CELL_TYPE_STRING:
 		                    //System.out.print(cell.getStringCellValue() + "\t\t");
