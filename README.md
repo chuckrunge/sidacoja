@@ -12,7 +12,8 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA. 
 
 
-Sidacoja provides methods for simple selection, sorting, and translation for tabular data contained in XLS, CSV, XML or JSON format.  A spreadsheet is a good example of the type of data supported.  In JSON or XML, a table appears as an array of cells.  
+Sidacoja provides methods for simple selection, sorting, and translation for tabular data contained in XLS, CSV, XML or JSON format.  A spreadsheet is a good example of the type of data supported.  In JSON or XML, a table appears as an array of cells.
+  
 Any of the listed formats can be read or written.  Or a table read in one format can be written in another.  If no selection criteria is supplied, the entire file will be written. 
 
 Each type is processed by it's own input class, and each type has it's own output class.  A common format of rows and cells called RowCache is used in between.  A RowCache contains a collection of rows, and each row contains a collection of cells.
@@ -35,7 +36,7 @@ This is all that's required to create a RowCache and write it to an output file.
 Optionally, specific columns can be selected by name by passing them in as a String array.
 
     	columns(new String[]{
-		"ID", "Case Number",	
+			"ID", "Case Number",	
     		"Date", "Primary Type",	
     		"Description", "Location Description",	
     		"Arrest"
@@ -98,10 +99,19 @@ Example:
     	sdjc.addFilter(new String[]{"AND", "First Name","EQ","John"});
     	sdjc.addFilter(new String[]{"AND", "City","EQ","Johnsonville"});
 
-EQ (equals) is the most specific way to identify rows, but NE (not equal) is also supported.  
-If excluding rows is simpler, NE is also available.
+EQ (equals) is the most specific way to identify rows, but NE (not equal) is also supported.  If excluding rows is simpler, NE is also available.
 
 Example:
     	sdjc.addFilter(new String[]{"OR", "Last Name","EQ","Smith"});
     	sdjc.addFilter(new String[]{"AND", "First Name","EQ","John"});
     	sdjc.addFilter(new String[]{"AND", "City","NE","Johnsonville"});
+
+		
+BATCH EXECUTION
+
+A main method is provided for batch execution.  Please note that several jar files might be needed on the classpath to support the operation in process.
+-commons-csv-1.1.jar
+-poi-3.13.jar
+-json-simple-1.1.1.jar
+
+The batch interface as provided expects an input file, input type, output file, and output type, in that order.  The program can be used for conversion between supported types.  Additional parameters can be added, if needed.
