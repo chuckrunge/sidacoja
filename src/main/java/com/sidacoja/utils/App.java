@@ -7,25 +7,29 @@ package com.sidacoja.utils;
 public class App 
 {
     public static void main( String[] args ) {
-    	
-    	//Sidacoja.input("C:/Users/Chuck/names.csv");
-    	//Sidacoja.input("C:/users/chuck/rowset.xml");
-    	/*
-    	Sidacoja.input("C:/users/chuck/inputFile1.json");
-    	Sidacoja.inputType("JSON");
-    	
-    	Sidacoja.columns(new String[]{"Sponsor","Member", "Contact"});
-    	Sidacoja.sequence(new String[] {"Sponsor","Member", "Contact"});
-    	Sidacoja.addFilter(new String[]{"OR", "Contact","EQ","eBay2"});
-    	Sidacoja.addFilter(new String[]{"OR", "Contact","EQ","eBay3"});
+ 
+    	Sidacoja sdcj = new Sidacoja();
+
+    	sdcj.input("./resources/inputFile1.json");
+    	sdcj.inputType("json");
+    	//sdjc.columns(new String[]{"Sponsor","Member", "Contact"});
+    	//Sidacoja.sequence(new String[] {"Sponsor","Member", "Contact"});
+    	//sdcj.addFilter(new String[]{"OR", "Method Of Contact","NE","online application"});
+    	//Sidacoja.addFilter(new String[]{"OR", "Contact","EQ","eBay3"});
     	//Sidacoja.addFilter(new String[]{"OR", "Emp No.","EQ","1.0"});
     	
-    	Sidacoja.output("C:/Users/Chuck/sidacoja.json");
-    	Sidacoja.outputType("JSON");
+    	sdcj.output("./sidacoja.xls");
+    	sdcj.outputType("xls");
     	
-    	Sidacoja.fire();
-    	*/
-    	//console(Sidacoja.getSidacoja().toString());
+    	RowCache cache = new RowCache();
+    	try {
+    		cache = sdcj.fire();
+    	} catch( Exception e) {
+    		console(e.getMessage() );
+    		e.printStackTrace();
+    	}
+    	
+    	console("output selected: "+cache.countSelected());
     		
     }
     

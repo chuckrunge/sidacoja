@@ -97,7 +97,7 @@ public class Sidacoja {
    		RowCache cache = new RowCache();
    		String status = null;
 
-   		switch(inputType) {
+   		switch( inputType.toUpperCase() ) {
    		case "CSV":
    			SourceDataCSV sdc = new SourceDataCSV();
    			cache = sdc.processInput(input);
@@ -200,16 +200,23 @@ public class Sidacoja {
     							}
     							//console("dark hole #1");
     						}
-							//rowWasSelected = row.isSelected();
+							//cell value matches;
     						if(filter[2].equals("NE")){
     							if( (filter[0].equals("OR")) || (filter[0].equals("AND") && rowWasSelected) ){
     								row.setSelected(false);
     							}
     							rowWasSelected = row.isSelected();
     						}
+    					} else {
+    						//cell value does not match
+    						if(filter[2].equals("NE")){
+    							if( (filter[0].equals("OR")) || (filter[0].equals("AND") && rowWasSelected) ){
+    								row.setSelected(true);
+    							}
+    							rowWasSelected = row.isSelected();
+    						}
+    						rowWasSelected = row.isSelected();
     					}
-						//cell value does not match
-    					rowWasSelected = row.isSelected();
     				} //end if
     				
 				int x = cells.lastIndexOf(cell);
@@ -306,8 +313,13 @@ public class Sidacoja {
 	public boolean isNullOrEmpty(String sz) {
 		boolean result = false;
 		
-		if(sz == null) result = true;
-		if(sz.isEmpty()) result = true;
+		if(sz == null) { 
+			result = true;
+		} else {
+			if(sz.isEmpty()) { 
+				result = true;
+			}
+		}
 		
 		return result;
 		

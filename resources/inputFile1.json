@@ -1,21 +1,27 @@
 {
-   "Author":"Foobar Poobah",
-   "Name":"foobar.com",
-   "Company List":[
-      {
-         "Contact":"eBay3",
-         "Sponsor":"Paypal2",
-         "Member":"Google1"
-      },
-      {
-         "Contact":"eBay2",
-         "Sponsor":"Paypal1",
-         "Member":"Google3"
-      },
-      {
-         "Contact":"eBay1",
-         "Sponsor":"Paypal3",
-         "Member":"Google2"
-      }
-   ]
+	"Author": "Foobar Poobah",
+	"Name": "foobar.com",
+	"Company List": {
+		"Row 2": [{
+			"Sponsor": "Paypal2"
+		}, {
+			"Member": "Google1"
+		}, {
+			"Contact": "eBay3"
+		}],
+		"Row 1": [{
+			"Sponsor": "Paypal1"
+		}, {
+			"Member": "Google3"
+		}, {
+			"Contact": "eBay2"
+		}],
+		"Row 0": [{
+			"Sponsor": "Paypal3"
+		}, {
+			"Member": "Google2"
+		}, {
+			"Contact": "eBay1"
+		}]
+	}
 }

@@ -44,8 +44,12 @@ public class TargetDataCSV implements TargetData{
         	try{
         	if(firstIteration) {
         		for(String label:labels) {
-        			System.out.print(label+",");
-        			bw.write(label+",");
+        			//System.out.print("*==>"+label+",");
+        			if(label.isEmpty() || label  == null) {
+        				bw.write("*,");
+        			} else {
+        				bw.write(label+",");
+        			}
         		}
         		System.out.println("");
         		bw.newLine();

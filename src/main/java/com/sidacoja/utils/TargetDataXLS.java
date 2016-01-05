@@ -138,12 +138,18 @@ public class TargetDataXLS implements TargetData {
         if(sz.isEmpty()) {
             return false;
         }
+        int slashes = sz.indexOf("//");
+        if(slashes != -1) {
+        	return false;
+        }
+        
         int slash1 = sz.indexOf('/');
         int slash2 = sz.indexOf(slash1+1,'/');
         
         if(slash2 == -1) {
         	return false;
         }
+        
         return true;
     }
     

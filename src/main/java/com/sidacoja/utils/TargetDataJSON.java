@@ -21,12 +21,11 @@ public class TargetDataJSON implements TargetData {
 	        Iterator<String> iter = keys.iterator();
 	        while(iter.hasNext()) {
 			   String key = iter.next();
-			   console(key+" = "+cache.simpleAttr.get(key));
+			   //console(key+" = "+cache.simpleAttr.get(key));
 			   if(!"List".equals(key)) {
 				   obj.put(key, cache.simpleAttr.get(key));	
 			   }
 	        }
-
 	        List<Row> rows = cache.getList();
 	        Row row = new Row();
 	        List<Cell> cells = new ArrayList<Cell>();
@@ -55,7 +54,11 @@ public class TargetDataJSON implements TargetData {
 			   }
 			}
 	        //update primary object
-		    obj.put(cache.simpleAttr.get("List"), jsonRow); 
+	        if(cache.simpleAttr.containsValue("List")) {
+			    obj.put(cache.simpleAttr.get("List"), jsonRow); 
+	        } else {
+				obj.put("List", jsonRow); //default object name
+	        }
 		   
 	        try {
 		        FileWriter jFile = new FileWriter(file);

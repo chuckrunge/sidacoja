@@ -38,14 +38,12 @@ public class TargetDataXML {
 					} else {
 						rootElement = doc.createElement(rootName);
 						rootElement.setAttribute("Name", rootName);
-						//console("*==>"+rootElement.getNodeName());
 					}
 					doc.appendChild(rootElement);
 					int i=0;
 
 					for(Row row:rows) {
 						if(row.isSelected()) {
-							console("row:  "+row.getNumber());
 							List<Cell> cells = row.getList();
 							Element rowElement = doc.createElement("Row");
 							rootElement.appendChild(rowElement);
@@ -58,7 +56,8 @@ public class TargetDataXML {
 						
 							for(Cell cell: cells) {
 								if(isSelected(cell.getLabel(), columns)) {
-									Element cellElement = doc.createElement(cell.getLabel());
+									String label = cell.getLabel().replaceAll(" ","_");
+									Element cellElement = doc.createElement(cell.getLabel().replaceAll(" ","_"));
 									cellElement.appendChild(doc.createTextNode(cell.getValue()));
 									rowElement.appendChild(cellElement);
 								}
