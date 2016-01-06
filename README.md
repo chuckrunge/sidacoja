@@ -11,8 +11,9 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 
 You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA. 
 
+*===============================================*
 
-Sidacoja provides methods for simple selection, sorting, and translation for tabular data contained in XLS, CSV, XML or JSON format.  A spreadsheet is a good example of the type of data supported.  In JSON or XML, a table appears as an array of cells.
+Sidacoja provides methods for simple selection, sorting, and translation for tabular data contained in XLS, CSV, XML or JSON format.  A spreadsheet is a good example of the type of data supported.  In JSON or XML, a table appears as an array of rows.
   
 Any of the listed formats can be read or written.  Or a table read in one format can be written in another.  If no selection criteria is supplied, the entire file will be written. 
 
@@ -29,7 +30,7 @@ For each run, one file is input, and one file is output, along with an explicit 
 
 Processing begins with the command to “fire”.
 
-	Fire();
+	fire();
 
 This is all that's required to create a RowCache and write it to an output file.
 
@@ -90,6 +91,7 @@ An example using all of the above, both required and optional, is shown below.
 
 		
 ADVANCED DATA SELECTION
+=======================
 
 Basic AND / OR logic is supported.  OR begins a new criterion.  AND ties a criterion to the previous one.  
 So AND will string multiple criteria together, and they all must be true.
@@ -108,10 +110,11 @@ Example:
 
 		
 BATCH EXECUTION
+===============
 
 A main method is provided for batch execution.  Please note that several jar files might be needed on the classpath to support the operation in process.
--commons-csv-1.1.jar
--poi-3.13.jar
--json-simple-1.1.1.jar
+-commons-csv-1.1.jar for CSV files
+-poi-3.13.jar for XLS files
+-json-simple-1.1.1.jar for JSON files
 
 The batch interface as provided expects an input file, input type, output file, and output type, in that order.  The program can be used for conversion between supported types.  Additional parameters can be added, if needed.
