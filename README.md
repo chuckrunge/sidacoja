@@ -36,7 +36,7 @@ Processing begins with the command to “fire”.
 
 	fire();
 
-This is all that's required to create a RowCache and write it to an output file.
+This is all that's required to create a RowCache and write it to an output file.  JDBC uses a URL string instead of a file path/file name.  The table name is passed as a separate parameter [ setTable("table") ], and can be overidden in JDBC output [ setOutputTable("outputTable") ]. 
 
 Optionally, specific columns can be selected by name by passing them in as a String array.
 
@@ -92,6 +92,35 @@ An example using all of the above, both required and optional, is shown below.
     	sdjc.outputType("XLS");
     	
     	RowCache cache = sdjc.fire();
+		
+		
+JDBC EXAMPLE
+============		
+
+    	final String DB_URL = "jdbc:hsqldb:hsql://localhost:9001/mdb";
+    	final String USER = "sa";
+    	final String PASS = "";
+
+    	Sidacoja sdcj = new Sidacoja();
+		
+		sdcj.input(DB_URL);
+    	sdcj.inputType("jdbc");
+    	sdcj.setTable("copyTable"); 
+    	
+    	sdcj.columns(new String[]{"AGE", "ID", "START", "FIRST"});
+    	sdcj.sequence(new String[]{"START"});
+    	    	
+    	sdcj.output(DB_URL);
+    	sdcj.setOutputTable("copyTable");
+    	sdcj.outputType("jdbc");
+    	    	
+    	RowCache cache = new RowCache();
+    	try {
+    		cache = sdcj.fire();
+    	} catch( Exception e) {
+    		System.out.println(e.getMessage() );
+    		e.printStackTrace();
+    	}
 
 		
 ADVANCED DATA SELECTION
