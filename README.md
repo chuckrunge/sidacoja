@@ -12,10 +12,14 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA. 
 
 *===============================================*
-
-Sidacoja provides methods for simple selection, sorting, and translation for tabular data contained in XLS, CSV, XML or JSON format.  A spreadsheet is a good example of the type of data supported.  In JSON or XML, a table appears as an array of rows.
+SIDACOJA
+*===============================================*
+Sidacoja provides methods for simple selection, sorting, and translation for tabular data contained in JDBC, XLS, CSV, XML or JSON format.  A spreadsheet is a good example of the type of data supported.  In JSON or XML, a table appears as an array of rows.
   
-Any of the listed formats can be read or written.  Or a table read in one format can be written in another.  If no selection criteria is supplied, the entire file will be written. 
+Tabular data in any of the listed formats can be read or written.  Or a table read in one format can be written in another format.  If no selection criteria is supplied, the entire file will be written.
+
+WHAT IS SIDACOJA GOOD FOR?
+A database table can be dumped to a spreadsheet.  Or a spreadsheet can be loaded back to the database.  JSON input can be received as a Java object for further processing.  An XML table can be processed in the same way.  And when you're done, you can write it out as a csv or any other format.  
 
 Each type is processed by it's own input class, and each type has it's own output class.  A common format of rows and cells called RowCache is used in between.  A RowCache contains a collection of rows, and each row contains a collection of cells.
 
@@ -43,7 +47,7 @@ Optionally, specific columns can be selected by name by passing them in as a Str
     		"Arrest"
     	});
 
-Or the table can be sorted on specific columns.   
+Or the table can be sorted on specific columns.  Of course, sorted columns must be selected for processing (as above). 
 
 	sequence(new String[] {
     		"Case Number", "Arrest"
@@ -55,7 +59,7 @@ And, if you'd like to pull a subset, columns and values can be specified for row
     	addFilter(new String[]{"OR", "Primary Type","EQ","BATTERY"});
     	addFilter(new String[]{"OR", "Primary Type","EQ","BURGLARY"});
 
-Also, the “fire” method returns a RowCache object which can be received by the invoking program.
+Also, the “fire” method returns a RowCache object which can be received by the invoking program.  A JSON or XML document can then be processed as a POJO, same as a spreadsheet or database table.
 
     	RowCache cache = sdjc.fire();
 
@@ -117,4 +121,20 @@ A main method is provided for batch execution.  Please note that several jar fil
 -poi-3.13.jar for XLS files
 -json-simple-1.1.1.jar for JSON files
 
-The batch interface as provided expects an input file, input type, output file, and output type, in that order.  The program can be used for conversion between supported types.  Additional parameters can be added, if needed.
+The batch interface as provided expects an input file, input type, output file, and output type, in that order.  The program can be used for simple conversion between supported types.  
+
+Additional parameters can be provided via environment variables.  It is suggested that parameters be passed either via command line or via environment variables to avoid confusion.
+
+::set advanced parameter list for sidacoja
+
+set input = "C:\\Users\\Chuck\\sidacoja.xls"
+set inputType = XLS
+
+set output = "C:\\Users\\Chuck\\sidacoja.csv"
+set outputType = CSV
+
+set columns = "CURRENCY1","CURRENCY2","AMOUNT","SETTLEMENT","ACCOUNT"
+set sequencers = "CURRENCY1","CURRENCY2","AMOUNT","SETTLEMENT","ACCOUNT"
+set filters = "OR","CURRENCY1","EQ","USD"
+
+set cacheOnly = false;
