@@ -55,10 +55,6 @@ public class SourceDataCSV implements SourceData {
     	    	
     	RowCache cache = new RowCache(rows);
     	console(rows.size()+" rows added");
-    	//for(Row row: rows) {
-    	//	console(row.toString());
-    	//}
-    	//console(cache.toString());
     	
    		return cache;
 	}

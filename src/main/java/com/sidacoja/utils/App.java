@@ -1,22 +1,35 @@
 package com.sidacoja.utils;
 
 /**
- * Hello world!
+ * Hello Sidacoja!
  *
  */
 public class App 
 {
     public static void main( String[] args ) {
- 
+
+    	 final String DB_URL = "jdbc:hsqldb:hsql://localhost:9001/mdb";
+    	 final String USER = "sa";
+    	 final String PASS = "";
+
     	Sidacoja sdcj = new Sidacoja();
 
-    	sdcj.input("./resources/inputFile1.json");
-    	sdcj.inputType("json");
-    	//sdjc.columns(new String[]{"Sponsor","Member", "Contact"});
-    	//Sidacoja.sequence(new String[] {"Sponsor","Member", "Contact"});
-    	//sdcj.addFilter(new String[]{"OR", "Method Of Contact","NE","online application"});
+    	sdcj.input(DB_URL);
+    	sdcj.inputType("jdbc");
+    	sdcj.setTable("copyTable"); //Employees
+    	
+    	sdcj.columns(new String[]{"AGE", "ID", "START", "FIRST"});
+    	sdcj.sequence(new String[]{"START"}); //"AGE", "ID", , "FIRST"
+    	
+    	//sdcj.addFilter(new String[]{"OR", "AGE","NE","30"});
     	//Sidacoja.addFilter(new String[]{"OR", "Contact","EQ","eBay3"});
     	//Sidacoja.addFilter(new String[]{"OR", "Emp No.","EQ","1.0"});
+    	
+    	//sdcj.setCacheOnly(true);
+    	
+    	//sdcj.output(DB_URL);
+    	//sdcj.setOutputTable("copyTable");
+    	//sdcj.outputType("jdbc");
     	
     	sdcj.output("./sidacoja.xls");
     	sdcj.outputType("xls");

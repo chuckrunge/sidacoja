@@ -34,6 +34,8 @@ public class Sidacoja {
 	private boolean cacheOnly = false;
 	private String output;
 	private String outputType;
+	private String table;
+	private String outputTable;
 	private Sidacoja sdcj;
 	
 	public Sidacoja getSidacoja() {
@@ -85,6 +87,22 @@ public class Sidacoja {
 		this.cacheOnly = cacheOnly;
 	}
 
+	public String getTable() {
+		return table;
+	}
+
+	public void setTable(String table) {
+		this.table = table;
+	}
+
+	public String getOutputTable() {
+		return outputTable;
+	}
+
+	public void setOutputTable(String outputTable) {
+		this.outputTable = outputTable;
+	}
+
 	public RowCache fire() throws Exception{
    		
    		if(isNullOrEmpty(input)) throw new Exception("Input file is required.");
@@ -92,6 +110,20 @@ public class Sidacoja {
    		if(!isCacheOnly()) {
    			if(isNullOrEmpty(output)) throw new Exception("Output file is required.");
    			if(isNullOrEmpty(outputType)) throw new Exception("Output Type is required.");
+   		}
+   		if("JDBC".equals(inputType)) {
+   			if(isNullOrEmpty(table)) {
+   				throw new Exception("JDBC requires table name");
+   			}
+   		}
+   		if( !(columns == null || sequencers == null) ) {   			
+   			if(columns.length>0 & sequencers.length>0) {
+   				for(String sequencer:sequencers) {
+   					if(!isSelected(sequencer, columns)) {
+   						throw new Exception("sequencer "+sequencer+" is not a selected column");   					
+   					}
+   				}
+   			}
    		}
    		
    		RowCache cache = new RowCache();
@@ -115,6 +147,12 @@ public class Sidacoja {
    		case "JSON":
    			SourceDataJSON sdj = new SourceDataJSON();
    			cache = sdj.processInput(input);
+   			//cache.display();
+   			break;
+   		case "JDBC":
+   			SourceDataJDBC sjdb = new SourceDataJDBC();
+   			sjdb.setTable(table);
+   			cache = sjdb.processInput(input);
    			//cache.display();
    			break;
    		default:
@@ -152,6 +190,15 @@ public class Sidacoja {
    		case "JSON":
    			TargetDataJSON tdj = new TargetDataJSON(); 
    			status = tdj.processOutput(cache, columns, output);
+   			break;
+   		case "JDBC":
+   			TargetDataJDBC sdb = new TargetDataJDBC();
+   			if(outputTable == null | outputTable.isEmpty()) {
+   				outputTable = table;
+   			}
+   			sdb.setTable(outputTable);
+   			status = sdb.processOutput(cache, columns, output);
+   			//cache.display();
    			break;
    		default:
    			throw new Exception("Output Type "+outputType+" is not supported.");
