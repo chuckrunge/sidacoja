@@ -1,15 +1,19 @@
 ::set advanced parameter list for sidacoja
 set cmdHome=%CD%
 echo off
-set input=C:\\Users\\Chuck\\sidacoja.xls
-set inputType=XLS
+set input=jdbc:hsqldb:hsql://localhost:9001/mdb
+set inputType=JDBC
+set table=copyTable
 
-set output=C:\\Users\\Chuck\\sidacoja.csv
-set outputType=CSV
+set output=C:\\Users\\Chuck\\sidacoja.xls
+set outputType=XLS
 
-set columns="CURRENCY1","CURRENCY2","AMOUNT","SETTLEMENT","ACCOUNT"
-set sequencers="CURRENCY1","CURRENCY2","AMOUNT","SETTLEMENT","ACCOUNT"
-set filters="OR","CURRENCY1","EQ","USD"
+set columns=
+set columns=ID,AGE,START,FIRST
+set sequencers=
+set sequencers=ID,AGE,START,FIRST
+set filters=
+set filters=OR,ID,NE,100
 
 set cacheOnly=false;
 
@@ -17,6 +21,7 @@ set cacheOnly=false;
 echo on
 
 set input 
+set table
 
 set output 
  
