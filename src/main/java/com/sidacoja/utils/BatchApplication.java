@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 /**
  * convert one file type to another
@@ -25,36 +26,35 @@ public class BatchApplication {
 	
 	private static boolean envFound = false;
 
+/*
+ * provide interface to sidacoja from batch environment	
+ */
 	public static void main( String[] args ) {
 
     	console("sidacoja utilitites");
     	envFound = checkEnvironment();
-    	
+
+    	//need parms from arguments or environment variables
     	if(!envFound && args.length != 4) {
     		console("4 input parameters are required...");
     		console("input file, input type, output file, output type");
-    		//return;
+    		return;
     	}
     	
     	int i = 0;
     	Sidacoja sdcj = new Sidacoja();
+    	
+    	//use parameters if provided
     	for(String parm: args) {
     		console(parm);
-    		if(i==0) {
-    			sdcj.input(parm);
-    		}
-    		if(i==1) {
-    			sdcj.inputType(parm);
-    		}
-    		if(i==2) {
-    			sdcj.output(parm);
-    		}
-    		if(i==3) {
-    			sdcj.outputType(parm);
-    		}
+    		if(i==0) { sdcj.input(parm); }
+    		if(i==1) { sdcj.inputType(parm); }
+    		if(i==2) { sdcj.output(parm); }
+    		if(i==3) { sdcj.outputType(parm); }
     		i++;
     	}
 
+    	//update sidacoja from environment variables
 		if(!isNullOrEmpty(input)) {
 			sdcj.input(input);
 			console("input: "+input);
@@ -64,24 +64,38 @@ public class BatchApplication {
 			console("inputType: "+inputType);
 		}
 		if(!isNullOrEmpty(output)) {
-			console("output: "+output);
 			sdcj.output(output);
+			console("output: "+output);
 		}
 		if(!isNullOrEmpty(outputType)) {
-			console("outputType: "+outputType);
 			sdcj.outputType(outputType);
+			console("outputType: "+outputType);
 		}
-	/*
-		if(!isNullOrEmpty(columns.toString())) {
-			//console("columns: "+columns.toString());
+		if(columns!=null) {
 			sdcj.columns(columns);
+			console(columns.length+" columns selected");
 		}
-		if(!isNullOrEmpty(sequencers.toString())) {
-			//console("outputType: "+sequencers.toString());
+		if(sequencers!=null) {
 			sdcj.sequence(sequencers);
+			console(sequencers.length+"sequencers selected");
 		}
-		sdcj.setCacheOnly(cacheOnly);
-	*/
+		if(!filters.isEmpty()) {
+			sdcj.addFilter(filters.get(0));
+			console("filters: "+filters.get(0));
+		}
+		if(cacheOnly) { 
+			sdcj.setCacheOnly(cacheOnly); 
+			console("cacheOnly: "+cacheOnly);
+		}
+		if(!isNullOrEmpty(table)) { 
+			sdcj.setTable(table); 
+			console("table: "+table);
+		}
+		if(!isNullOrEmpty(outputTable)) { 
+			sdcj.setTable(outputTable); 
+			console("outputTable: "+outputTable);			
+		}
+
     	RowCache cache = new RowCache();
     	try {
     		cache = sdcj.fire();
@@ -93,7 +107,9 @@ public class BatchApplication {
     	console("output rows selected: "+cache.countSelected());
     		
     }
- 
+ /*
+  * check for variables from system environment
+  */
     public static boolean checkEnvironment() {
     	boolean wasFound = false;
     	String[] vars = {"input",
@@ -106,90 +122,83 @@ public class BatchApplication {
     			"outputType",
     			"table",
     			"outputTable"};
+    	
     	Map<String,String> env = System.getenv();
+    	//Properties env = System.getProperties();    	
     	//dumpVars(env);
-    	for(String var:vars) {
-    		console(var+": "+env.get(var));
-    		//if( env.containsKey(var) ) {
-    			//console("env.containsKey: "+var);
-        		if("input".equals(var)) {
-        			//console("input is equals");
-        			input = env.get(var);
-        			//console("input: "+input);
+
+    	List<String> keys = new ArrayList<String>(env.keySet());
+    	Collections.sort(keys);
+    	for (String key : keys) {
+        		if("input".equals(key)) {
+        			input = (String) env.get(key);
         			wasFound = true;
         		}
-        		if("inputType".equals(var)) {
-        			//console("inputType is equals");
-        			inputType = env.get(var);
-        			//console("inputType: "+inputType);
+        		if("inputType".equals(key)) {
+        			inputType = (String) env.get(key);
         			wasFound = true;
         		}
-        		if("columns".equals(var)) {
-        			//console("columns is equal");
-        			String szVar = env.get(var);
-        			//console("from properties: "+szVar);
+        		if("columns".equals(key)) {
+        			String szVar = (String) env.get(key);
         			columns = loadStringArray(szVar);
         			wasFound = true;
         		}
-        		if("sequencers".equals(var)) {
-        			sequencers  = loadStringArray(env.get(var));
+        		if("sequencers".equals(key)) {
+        			sequencers  = loadStringArray((String) env.get(key));
         			wasFound = true;
         		}
-        		if("filters".equals(var)) {
+        		if("filters".equals(key)) {
         			//every filter is an array - filter is a list of arrays
-        			String filterString = env.get(var);
+        			String filterString = (String) env.get(key);
         			if(isNullOrEmpty(filterString)) {
         				console("filters not found");
         			} else {
-            			String[] oneFilter = loadStringArray(env.get(var));
+            			String[] oneFilter = loadStringArray((String) env.get(key));
             			filters.add(oneFilter);
             			wasFound = true;        				
         			}
         		}
-        		if("cacheOnly".equals(var)) {
-        			if("true".equals(env.get(var))) {
+        		if("cacheOnly".equals(key)) {
+        			if("true".equals(env.get(key))) {
         				cacheOnly = true;
         				wasFound = true;
         			};
-        			if("false".equals(env.get(var))) {
+        			if("false".equals(env.get(key))) {
         				cacheOnly = false;
         				wasFound = true;
         			};
         		}
-        		if("output".equals(var)) {
-        			output = env.get(var);
+        		if("output".equals(key)) {
+        			output = (String) env.get(key);
         			wasFound = true;
         		}
-        		if("outputType".equals(var)) {
-        			outputType = env.get(var);
+        		if("outputType".equals(key)) {
+        			outputType = (String) env.get(key);
         			wasFound = true;
         		}
-        		if("table".equals(var)) {
-        			table = env.get(var);
+        		if("table".equals(key)) {
+        			table = (String) env.get(key);
         			wasFound = true;
         		}
-        		if("outputTable".equals(var)) {
-        			outputTable = env.get(var);
+        		if("outputTable".equals(key)) {
+        			outputTable = (String) env.get(key);
         			wasFound = true;
         		}
-        	//}
     		
     	}
     	
     	return wasFound;
     	
     }
-
+/*
+ * load string received by parsing it into an array
+ */
     public static String[] loadStringArray(String sz) {
     	
-    	//console("in loadStringArray: "+sz);
     	String[] szArray = null;
     	String delims = ","; // use + to treat consecutive delims as one;
     	                    // omit to treat consecutive delims separately
     	szArray = sz.split(delims);
-    	//for(String sx:szArray) {
-    	//	console(sx);
-    	//}
     	
     	return szArray;
     	
@@ -209,7 +218,9 @@ public class BatchApplication {
 		return result;
 		
 	}
-
+/*
+ * test method to review system environment
+ */
 	private static void dumpVars(Map<String, ?> m) {
 		  List<String> keys = new ArrayList<String>(m.keySet());
 		  Collections.sort(keys);

@@ -104,7 +104,8 @@ public class Sidacoja {
 	}
 
 	public RowCache fire() throws Exception{
-   		
+ 
+		//perform simple validation with error messages
    		if(isNullOrEmpty(input)) throw new Exception("Input file is required.");
    		if(isNullOrEmpty(inputType)) throw new Exception("Input Type is required.");
    		if(!isCacheOnly()) {
@@ -125,11 +126,31 @@ public class Sidacoja {
    				}
    			}
    		}
+   		if( !(filters.size()>0 || columns == null) ) {   			
+   			if(columns.length>0) {
+   				for(String[] filter: filters) {
+   					if(!isSelected(filter[1], columns)) {
+   						throw new Exception("filter for "+filter[1]+" is not a selected column");   					
+   					}
+   				}
+   			}
+   		}
    		
+   		if(filters.size()>0) {
+   			for(String[] filter: filters) {
+   				if(!("AND".equals(filter[0]) || "OR".equals(filter[0])) ) {
+   					throw new Exception(filter[0]+" is not valid in filter. First value must be AND or OR");
+   				}
+   				if(!("EQ".equals(filter[2]) || "NE".equals(filter[2])) ) {
+   					throw new Exception(filter[2]+" is not valid in filter. Third value must be EQ or NE");
+   				}
+   			}
+   			
+   		}
    		RowCache cache = new RowCache();
    		String status = null;
 
-   		switch( inputType.toUpperCase() ) {
+   		switch( inputType.toUpperCase().trim() ) {
    		case "CSV":
    			SourceDataCSV sdc = new SourceDataCSV();
    			cache = sdc.processInput(input);

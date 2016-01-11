@@ -3,7 +3,6 @@ package com.sidacoja.utils;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -60,12 +59,10 @@ public class SourceDataXLS implements SourceData {
 		            }
 		            switch(cell.getCellType()) {
 		                case Cell.CELL_TYPE_BOOLEAN:
-		                    //System.out.print(cell.getBooleanCellValue() + "\t\t");	                    
 		                    sCell.setValue(Boolean.toString(cell.getBooleanCellValue()));
 		                    sCell.setDataType("Boolean");
 		                    break;
 		                case Cell.CELL_TYPE_NUMERIC:
-		                    //System.out.print(cell.getNumericCellValue() + "\t\t");
 		                    double dv = cell.getNumericCellValue();
 		                    if (HSSFDateUtil.isCellDateFormatted(cell)) {
 		                        Date date = HSSFDateUtil.getJavaDate(dv);
@@ -79,14 +76,12 @@ public class SourceDataXLS implements SourceData {
 		                        
 			                    sCell.setValue(strValue);
 		                    	sCell.setDataType("Date");
-		                    	//console(strValue);
 		                    } else {
 			                    sCell.setValue(Double.toString(cell.getNumericCellValue()));
 		                    	sCell.setDataType("Double");
 		                    }
 		                    break;
 		                case Cell.CELL_TYPE_STRING:
-		                    //System.out.print(cell.getStringCellValue() + "\t\t");
 		                    if(firstRow) {
 		                    	labels.add(cell.getStringCellValue());
 		                    } else {
@@ -96,14 +91,10 @@ public class SourceDataXLS implements SourceData {
 		                    break;
 		            } //end switch
 		            if(firstRow == false) {
-		            	//console("");
 		            	cells.add(sCell);
 		            	sCell = new com.sidacoja.utils.Cell();
-		            	//displayCells(cells);
 		            }
 		        } //end cell loop
-	            //System.out.println("");
-	        	//displayCells(cells);
 	        	i=0;
 	            if(firstRow == false) {
 	            	sRow = new com.sidacoja.utils.Row();
@@ -116,6 +107,8 @@ public class SourceDataXLS implements SourceData {
 	            else {firstRow = false;}
 	            
 		    } //end row loop
+		    
+		    workbook.close();
 		    file.close();
 		    cache.setList(rows);
 		    
@@ -124,7 +117,7 @@ public class SourceDataXLS implements SourceData {
 		} catch (IOException e) {
 		    e.printStackTrace();
 		}
-
+		
 		return cache;
 		
 	}
@@ -133,9 +126,6 @@ public class SourceDataXLS implements SourceData {
 		for(com.sidacoja.utils.Cell cell:cells) {
 			console(cell.toString());
 		}
-		//for(int m=0;m<cells.size();m++) {
-		//	console(cells.get(m).toString());
-		//}
 	}
 	
     public void console(String sz) {
