@@ -138,10 +138,10 @@ public class Sidacoja {
    		
    		if(filters.size()>0) {
    			for(String[] filter: filters) {
-   				if(!("AND".equals(filter[0]) || "OR".equals(filter[0])) ) {
+   				if((!"AND".equals(filter[0]) && !"OR".equals(filter[0])) ) {
    					throw new Exception(filter[0]+" is not valid in filter. First value must be AND or OR");
    				}
-   				if(!("EQ".equals(filter[2]) || "NE".equals(filter[2])) ) {
+   				if((!"EQ".equals(filter[2]) && !"NE".equals(filter[2])) ) {
    					throw new Exception(filter[2]+" is not valid in filter. Third value must be EQ or NE");
    				}
    			}
@@ -214,7 +214,7 @@ public class Sidacoja {
    			break;
    		case "JDBC":
    			TargetDataJDBC sdb = new TargetDataJDBC();
-   			if(outputTable == null | outputTable.isEmpty()) {
+   			if(outputTable == null || outputTable.isEmpty()) {
    				outputTable = table;
    			}
    			sdb.setTable(outputTable);

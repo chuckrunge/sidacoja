@@ -29,7 +29,6 @@ public class TargetDataXLS implements TargetData {
 
 		Map<String, Object[]> data = new LinkedHashMap<String, Object[]>();
 		List<com.sidacoja.utils.Row> rows = cache.getList();
-		//console("rows size:"+rows.size());
 		data = loadMap(rows.get(0), data, columns, true); //labels only
 		for(com.sidacoja.utils.Row row: rows) {
 			data = loadMap(row, data, columns, false); //data rows
@@ -89,7 +88,6 @@ public class TargetDataXLS implements TargetData {
 		int i = 0;
 		Integer inty = new Integer(i);
 		List<com.sidacoja.utils.Cell> cells = row.getList();
-		//console("number cells: "+cells.size());
 		Object[] obj = new Object[cells.size()];
 		
 		if(firstTime) {

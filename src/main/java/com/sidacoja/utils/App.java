@@ -21,8 +21,8 @@ public class App
     	sdcj.columns(new String[]{"AGE", "ID", "START", "FIRST"});
     	sdcj.sequence(new String[]{"START"}); //"AGE", "ID", , "FIRST"
     	
-    	//sdcj.addFilter(new String[]{"OR", "AGE","NE","30"});
-    	//Sidacoja.addFilter(new String[]{"OR", "Contact","EQ","eBay3"});
+    	sdcj.addFilter(new String[]{"OR", "AGE","NE","30"});
+    	sdcj.addFilter(new String[]{"OR", "AGE","NE","99"});
     	//Sidacoja.addFilter(new String[]{"OR", "Emp No.","EQ","1.0"});
     	
     	//sdcj.setCacheOnly(true);

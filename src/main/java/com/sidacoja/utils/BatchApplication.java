@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.Properties;
 
 /**
- * convert one file type to another
+ * convert one input type to another
  *
  */
 public class BatchApplication {
@@ -32,9 +32,11 @@ public class BatchApplication {
 	public static void main( String[] args ) {
 
     	console("sidacoja utilitites");
+    	
+    	//retrieve environment variaables
     	envFound = checkEnvironment();
 
-    	//need parms from arguments or environment variables
+    	//need environment variables or parms from arguments 
     	if(!envFound && args.length != 4) {
     		console("4 input parameters are required...");
     		console("input file, input type, output file, output type");
@@ -47,14 +49,14 @@ public class BatchApplication {
     	//use parameters if provided
     	for(String parm: args) {
     		console(parm);
-    		if(i==0) { sdcj.input(parm); }
-    		if(i==1) { sdcj.inputType(parm); }
-    		if(i==2) { sdcj.output(parm); }
-    		if(i==3) { sdcj.outputType(parm); }
+    		if(i==0) { input = parm; }
+    		if(i==1) { inputType = parm; }
+    		if(i==2) { output = parm; }
+    		if(i==3) { outputType = parm;; }
     		i++;
     	}
 
-    	//update sidacoja from environment variables
+    	//update sidacoja with input variables
 		if(!isNullOrEmpty(input)) {
 			sdcj.input(input);
 			console("input: "+input);
@@ -77,12 +79,13 @@ public class BatchApplication {
 		}
 		if(sequencers!=null) {
 			sdcj.sequence(sequencers);
-			console(sequencers.length+"sequencers selected");
+			console(sequencers.length+" sequencers selected");
 		}
 		if(!filters.isEmpty()) {
 			sdcj.addFilter(filters.get(0));
-			console("filters: "+filters.get(0));
+			console(filters.size()+" filters provided");
 		}
+		
 		if(cacheOnly) { 
 			sdcj.setCacheOnly(cacheOnly); 
 			console("cacheOnly: "+cacheOnly);

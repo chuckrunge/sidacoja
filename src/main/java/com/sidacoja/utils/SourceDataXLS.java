@@ -21,7 +21,7 @@ public class SourceDataXLS implements SourceData {
 	public RowCache processInput(String input) {
 		
 		console(input);
-		int i=0, j=0;
+		int i=0, j=0, k=0, m=0;
 		boolean firstRow = true;
 	    RowCache cache = new RowCache();
 		
@@ -43,20 +43,26 @@ public class SourceDataXLS implements SourceData {
 		    	
 		        Row row = rowIterator.next();
 		        cells = new ArrayList<com.sidacoja.utils.Cell>();
-		        i=0;
-		        if(j % 1000 == 0) {
-		        	console("row: "+j); //" cell "+i
+		        if(k % 1000 == 0) {
+		        	console("row: "+k); //" cell "+i
 		        }
-		        Iterator<Cell> cellIterator = row.cellIterator(); //iterate through columns 
-	            
-	            while(cellIterator.hasNext()) {
+		        k++;
+		        i=0;m=0;
+		        //Iterator<Cell> cellIterator = row.cellIterator(); //iterate through columns 
+		        for(int cn=0; cn<row.getLastCellNum(); cn++) {
+	            //while(cellIterator.hasNext()) {
 		             
-		            Cell cell = cellIterator.next();
+		            Cell cell  = row.getCell(cn, Row.CREATE_NULL_AS_BLANK); //cellIterator.next();
 		            if(firstRow == false) {
 		            	sCell.setNumber(i);
 		            	sCell.setLabel(labels.get(i));
 		            	i = i + 1;
 		            }
+		            //console("index: "+cell.getColumnIndex()+" prev: "+m);
+		            if( !(cell.getColumnIndex() == 1 + m)) {
+		            	if(cell.getColumnIndex()>0) {console("wacky cell : "+cell.getColumnIndex());}
+		            }
+		            m = cell.getColumnIndex();
 		            switch(cell.getCellType()) {
 		                case Cell.CELL_TYPE_BOOLEAN:
 		                    sCell.setValue(Boolean.toString(cell.getBooleanCellValue()));
@@ -72,7 +78,6 @@ public class SourceDataXLS implements SourceData {
 		                        Java fmt differs from Excel fmt. If Excel date format is mm/dd/yyyy, Java 
 		                        will always be 00 for date since "m" is minutes of the hour.*/
 		                        String strValue = new CellDateFormatter(dateFmt).format(date); 
-		                        // takes care of idiosyncrasies of Excel
 		                        
 			                    sCell.setValue(strValue);
 		                    	sCell.setDataType("Date");
@@ -89,6 +94,10 @@ public class SourceDataXLS implements SourceData {
 		                    	sCell.setDataType("String");
 		                    }
 		                    break;
+		                case Cell.CELL_TYPE_BLANK:
+                    		sCell.setValue(cell.getStringCellValue());
+                    		sCell.setDataType("String");		                	
+		                	break;
 		            } //end switch
 		            if(firstRow == false) {
 		            	cells.add(sCell);

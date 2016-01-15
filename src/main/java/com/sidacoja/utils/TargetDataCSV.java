@@ -32,19 +32,15 @@ public class TargetDataCSV implements TargetData{
         		
         		if(firstIteration && isSelected(cell.getLabel(), columns)) {
         			labels.add(cell.getLabel());
-        			//console(cell.getLabel());
         		} 
         		if(row.isSelected()&& isSelected(cell.getLabel(), columns)) {
         			values.add(cell.getValue());
-        		//console(cell.getValue());
         		}
-//        		console(cell.getLabel()+" "+cell.getValue()+" "+cell.getDataType());
         		
         	} //end cell loop
         	try{
         	if(firstIteration) {
         		for(String label:labels) {
-        			//System.out.print("*==>"+label+",");
         			if(label.isEmpty() || label  == null) {
         				bw.write("*,");
         			} else {
@@ -60,7 +56,6 @@ public class TargetDataCSV implements TargetData{
             		//System.out.print(value+",");
             		bw.write(value+",");
             	}
-        		//System.out.println("");
         		bw.newLine();
         	}
         	} catch(IOException ioe) {
