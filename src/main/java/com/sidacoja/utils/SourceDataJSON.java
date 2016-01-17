@@ -1,4 +1,5 @@
 package com.sidacoja.utils;
+import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,12 +21,19 @@ public class SourceDataJSON implements SourceData{
 		Row row = new Row();
 		Cell cell = new Cell();
         JSONParser parser = new JSONParser();
+        JSONObject jsonObject = new JSONObject();
         int i=0, j=0, k=0, c=0, r=0;
         
         try {
  
-            Object obj = parser.parse(new FileReader(file));
-            JSONObject jsonObject = (JSONObject) obj;
+        	File checkIt = new File(file);
+        	if(checkIt.exists()) {
+                Object obj = parser.parse(new FileReader(file));
+                jsonObject = (JSONObject) obj;        		
+        	} else {
+                jsonObject = (JSONObject)new JSONParser().parse(file);        		
+        	}
+
             String label = null, value = null;
 
             Set<?> keys = jsonObject.entrySet();

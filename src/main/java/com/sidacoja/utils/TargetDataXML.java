@@ -1,8 +1,9 @@
 package com.sidacoja.utils;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.OutputStream;
 import java.util.List;
-import java.lang.Integer;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -12,7 +13,7 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
- 
+
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -22,7 +23,9 @@ public class TargetDataXML {
 	   public String processOutput(RowCache cache, String[] columns, String file) {
 		   
 		   console(file);
+		   String xmlReq = null;
 		   List<Row> rows = cache.getList();
+		   Common common = new Common();
 		   
 			  try {
 				  
@@ -55,8 +58,8 @@ public class TargetDataXML {
 							rowElement.setAttributeNode(attr);
 						
 							for(Cell cell: cells) {
-								if(isSelected(cell.getLabel(), columns)) {
-									String label = cell.getLabel().replaceAll(" ","_");
+								if(common.isSelected(cell.getLabel(), columns)) {
+									//String label = cell.getLabel().replaceAll(" ","_");
 									Element cellElement = doc.createElement(cell.getLabel().replaceAll(" ","_"));
 									cellElement.appendChild(doc.createTextNode(cell.getValue()));
 									rowElement.appendChild(cellElement);
@@ -65,44 +68,33 @@ public class TargetDataXML {
 						}
 					}
 					// write the content into xml file
+					File outFile = new File(file);
 					TransformerFactory transformerFactory = TransformerFactory.newInstance();
 					Transformer transformer = transformerFactory.newTransformer();
 					DOMSource source = new DOMSource(doc);
-					StreamResult result = new StreamResult(new File(file));
+					if(outFile.exists()) { 
+						StreamResult result = new StreamResult(outFile); //new File(file)
+						transformer.transform(source, result);
+					}
 			 
-					// Output to console for testing
-					// StreamResult result = new StreamResult(System.out);
-			 
-					transformer.transform(source, result);
-			 
+					// Output to string
+				    OutputStream out = new ByteArrayOutputStream();
+				    StreamResult streamResult = new StreamResult();
+				    streamResult.setOutputStream(out);
+				    transformer.transform(source, streamResult);
+				    xmlReq = streamResult.getOutputStream().toString();					
 					console("XML written successfully...\n");
 			 
 				  } catch (ParserConfigurationException pce) {
-					pce.printStackTrace();
+					  pce.printStackTrace();
 				  } catch (TransformerException tfe) {
-					tfe.printStackTrace();
+					  tfe.printStackTrace();
 				  }
 	   
-	   return "OK";
+	   return xmlReq;
 		   
 	   }
 
-	public boolean isSelected(String label, String[] columns) {
-
-		if(columns == null) {
-			return true;
-		}
-		
-		for(int m=0;m<columns.length;m++) {
-			if(label.equals(columns[m])) {
-				return true;
-			} //end if
-		} //end criteria loop
-
-		return false;
-		
-	}
-   
    public static void console(String sz) {
    	System.out.println(sz);
    }

@@ -6,6 +6,8 @@ import java.util.Map;
 
 public class RowCache {
 	
+	private Common common = new Common();
+	
 	public RowCache(List<Row> list) {
 		super();
 		this.list = list;
@@ -47,7 +49,7 @@ public class RowCache {
         	if(isColumnsNull) {
         		selected[i++] = cell.getLabel();
         	} else {
-        		if(isSelected(cell.getLabel(), columns)) {
+        		if(common.isSelected(cell.getLabel(), columns)) {
         			selected[i++] = cell.getLabel();
         		}
         	}
@@ -82,19 +84,18 @@ public class RowCache {
         }
 	}
 
-	public boolean isSelected(String label, String[] columns) {
-
-		if(columns == null) {
-			return true;
-		}
-		for(int m=0;m<columns.length;m++) {
-			if(label.equals(columns[m])) {
-				return true;
-			} //end if
-		} //end criteria loop
-
-		return false;
-	
+	public int countLabels(String[] columns) {
+		int i = 0;
+		List<Row> listRows = getList();
+		if(listRows == null)
+			return 0;
+		List<Cell> listCells = listRows.get(0).getList();
+        for(Cell cell: listCells) {
+        	if(common.isSelected(cell.getLabel(), columns)) {
+        		i++;
+        	}
+        }
+		return i;
 	}
 
 	public static void console(String sz) {

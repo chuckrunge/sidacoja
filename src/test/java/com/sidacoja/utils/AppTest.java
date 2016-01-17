@@ -77,7 +77,7 @@ public class AppTest
         assertTrue( 5319 == cache.countSelected() ); 
         
         //number of columns selected for output 7
-        assertTrue(7 == sdcj.countLabels(cache));
+        assertTrue(7 == cache.countLabels( sdcj.getColumns()));
         
         //number of columns selected for output 7
         assertTrue(7 == cache.getLabels(sdcj.getColumns()).length);
@@ -121,7 +121,7 @@ public class AppTest
         assertTrue(3 == cache.countSelected() );
         
         //number of columns selected for output
-        assertTrue(4 == sdcj.countLabels(cache));
+        assertTrue(4 == cache.countLabels( sdcj.getColumns()));
         
         //number of columns selected for output
         assertTrue(4 == cache.getLabels(sdcj.getColumns()).length);
@@ -166,7 +166,7 @@ public class AppTest
         assertTrue(2 == cache.countSelected() );
         
         //number of columns desired
-        assertTrue(3 == sdcj.countLabels(cache));
+        assertTrue(3 == cache.countLabels( sdcj.getColumns()));
         
         //number of columns in output
         assertTrue(3 == cache.getLabels(sdcj.getColumns()).length);
@@ -207,7 +207,7 @@ public class AppTest
         assertTrue(2 == cache.countSelected() );
         
         //number of columns desired
-        assertTrue(3 == sdcj.countLabels(cache));
+        assertTrue(3 == cache.countLabels( sdcj.getColumns()));
         
         //number of columns in output
         assertTrue(3 == cache.getLabels(sdcj.getColumns()).length);

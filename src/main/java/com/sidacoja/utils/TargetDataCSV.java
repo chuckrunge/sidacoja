@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TargetDataCSV implements TargetData{
+	
+	private Common common = new Common();
 
 	@Override
 	public String processOutput(RowCache cache, String[] columns, String file) {
@@ -30,10 +32,10 @@ public class TargetDataCSV implements TargetData{
         	values = new ArrayList<String>();
         	for(Cell cell: listCells) {
         		
-        		if(firstIteration && isSelected(cell.getLabel(), columns)) {
+        		if(firstIteration && common.isSelected(cell.getLabel(), columns)) {
         			labels.add(cell.getLabel());
         		} 
-        		if(row.isSelected()&& isSelected(cell.getLabel(), columns)) {
+        		if(row.isSelected()&& common.isSelected(cell.getLabel(), columns)) {
         			values.add(cell.getValue());
         		}
         		
@@ -76,23 +78,7 @@ public class TargetDataCSV implements TargetData{
 	return status;
 		
 	}
-	
-	public boolean isSelected(String label, String[] columns) {
-	
-		if(columns==null) {
-			return true;
-		}
-		for(int m=0;m<columns.length;m++) {
-			if(label.equals(columns[m])) {
-				return true;
-			} //end if
-		} //end criteria loop
-
-		return false;
-	
-	}
-	
-	
+		
     public void console(String sz) {
     	System.out.println(sz);
     }

@@ -36,7 +36,9 @@ public class Sidacoja {
 	private String outputType;
 	private String table;
 	private String outputTable;
+	private String status;
 	private Sidacoja sdcj;
+	private Common common = new Common();
 	
 	public Sidacoja getSidacoja() {
 		if(sdcj == null) {
@@ -103,6 +105,10 @@ public class Sidacoja {
 		this.outputTable = outputTable;
 	}
 
+	public String getReturnString() {
+		return status;
+	}
+
 	public RowCache fire() throws Exception{
  
 		//perform simple validation with error messages
@@ -120,7 +126,7 @@ public class Sidacoja {
    		if( !(columns == null || sequencers == null) ) {   			
    			if(columns.length>0 & sequencers.length>0) {
    				for(String sequencer:sequencers) {
-   					if(!isSelected(sequencer, columns)) {
+   					if(!common.isSelected(sequencer, columns)) {
    						throw new Exception("sequencer "+sequencer+" is not a selected column");   					
    					}
    				}
@@ -129,7 +135,7 @@ public class Sidacoja {
    		if( !(filters.size()>0 || columns == null) ) {   			
    			if(columns.length>0) {
    				for(String[] filter: filters) {
-   					if(!isSelected(filter[1], columns)) {
+   					if(!common.isSelected(filter[1], columns)) {
    						throw new Exception("filter for "+filter[1]+" is not a selected column");   					
    					}
    				}
@@ -148,7 +154,6 @@ public class Sidacoja {
    			
    		}
    		RowCache cache = new RowCache();
-   		String status = null;
 
    		switch( inputType.toUpperCase().trim() ) {
    		case "CSV":
@@ -207,10 +212,12 @@ public class Sidacoja {
    		case "XML":
    			TargetDataXML tdl = new TargetDataXML(); 
    			status = tdl.processOutput(cache, columns, output);
+   			//console(status);
    			break;
    		case "JSON":
    			TargetDataJSON tdj = new TargetDataJSON(); 
    			status = tdj.processOutput(cache, columns, output);
+   			//console(status);
    			break;
    		case "JDBC":
    			TargetDataJDBC sdb = new TargetDataJDBC();
@@ -347,35 +354,6 @@ public class Sidacoja {
 				"output="+output+","+
 				"outputType=" + outputType +
 				"]";
-	}
-
-	public int countLabels(RowCache cache) {
-		int i = 0;
-		List<Row> listRows = cache.getList();
-		if(listRows == null)
-			return 0;
-		List<Cell> listCells = listRows.get(0).getList();
-        for(Cell cell: listCells) {
-        	if(isSelected(cell.getLabel(), columns)) {
-        		i++;
-        	}
-        }
-		return i;
-	}
-
-	public boolean isSelected(String label, String[] columns) {
-
-		if(columns == null) {
-			return true;
-		}
-		for(int m=0;m<columns.length;m++) {
-			if(label.equals(columns[m])) {
-				return true;
-			} //end if
-		} //end criteria loop
-
-		return false;
-	
 	}
 	
 	public boolean isNullOrEmpty(String sz) {

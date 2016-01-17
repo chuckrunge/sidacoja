@@ -19,8 +19,9 @@ import org.apache.poi.ss.usermodel.CreationHelper;
 import org.apache.poi.ss.usermodel.Row;
 
 public class TargetDataXLS implements TargetData {
+	
+	private Common common = new Common();
 
-	@SuppressWarnings("deprecation")
 	public String processOutput(RowCache cache, String[] columns, String output) {
 
 		HSSFWorkbook workbook = new HSSFWorkbook();
@@ -72,6 +73,7 @@ public class TargetDataXLS implements TargetData {
 		    workbook.write(out);
 		    out.close();
 		    System.out.println("XLS written successfully...\n");
+			workbook.close();
 		     
 		} catch (FileNotFoundException fnfe) {
 		    fnfe.printStackTrace();
@@ -92,7 +94,7 @@ public class TargetDataXLS implements TargetData {
 		
 		if(firstTime) {
 			for(i=0;i<cells.size();i++) {
-				if(isSelected(cells.get(i).getLabel(), columns)) {
+				if(common.isSelected(cells.get(i).getLabel(), columns)) {
 					obj[i] = cells.get(i).getLabel();
 				}
 			}
@@ -102,7 +104,7 @@ public class TargetDataXLS implements TargetData {
 		
 		if(row.isSelected() && firstTime==false) {
 			for(i=0;i<cells.size();i++) {
-				if(isSelected(cells.get(i).getLabel(), columns)) {
+				if(common.isSelected(cells.get(i).getLabel(), columns)) {
 					obj[i] = cells.get(i).getValue();
 				}	
 			}
@@ -114,26 +116,10 @@ public class TargetDataXLS implements TargetData {
 	}
 	
 	
-	public boolean isSelected(String label, String[] columns) {
-
-		if(columns == null) {
-			return true;
-		}
-		for(int m=0;m<columns.length;m++) {
-			if(label.equals(columns[m])) {
-				return true;
-			} //end if
-		} //end criteria loop
-
-		return false;
-	
-	}
-	
     public void console(String sz) {
     	System.out.println(sz);
     }
 
-    
     public boolean isDate(String sz) {
         if(sz.isEmpty()) {
             return false;

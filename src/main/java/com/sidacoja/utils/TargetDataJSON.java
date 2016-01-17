@@ -1,5 +1,6 @@
 package com.sidacoja.utils;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -11,17 +12,20 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 public class TargetDataJSON implements TargetData {
+	
+	private Common common = new Common();
 
-	   public String processOutput(RowCache cache, String[] columns, String file) {
+	   @SuppressWarnings("unchecked")
+	public String processOutput(RowCache cache, String[] columns, String file) {
 		   
-		   	int i=0;
+		   	//int i=0;
+		    console(file);
 	        JSONObject obj = new JSONObject();
 	        
 	        Set<String> keys = cache.simpleAttr.keySet();
 	        Iterator<String> iter = keys.iterator();
 	        while(iter.hasNext()) {
 			   String key = iter.next();
-			   //console(key+" = "+cache.simpleAttr.get(key));
 			   if(!"List".equals(key)) {
 				   obj.put(key, cache.simpleAttr.get(key));	
 			   }
@@ -39,12 +43,12 @@ public class TargetDataJSON implements TargetData {
 			   row = (Row) rowIter.next();
 			   if(row.isSelected()) {
 				   cells = row.getList();
-				   Iterator cellIter = cells.iterator();
+				   Iterator<Cell> cellIter = cells.iterator();
 				   table = new JSONArray();
 				   while(cellIter.hasNext()) {
 					   cell = new Cell();
 					   cell = (Cell) cellIter.next();
-					   if(isSelected(cell.getLabel(), columns)) {
+					   if(common.isSelected(cell.getLabel(), columns)) {
 						   jsonObj = new JSONObject();
 						   jsonObj.put(cell.getLabel(), cell.getValue());
 						   table.add(jsonObj);
@@ -61,35 +65,22 @@ public class TargetDataJSON implements TargetData {
 	        }
 		   
 	        try {
-		        FileWriter jFile = new FileWriter(file);
-	            jFile.write(obj.toJSONString());
-	            jFile.flush();
-	            jFile.close();
+		        File fileX = new File(file);
+		        if(fileX.exists()) {
+		        	FileWriter jFile = new FileWriter(file);
+		        	jFile.write(obj.toJSONString());
+		        	jFile.flush();
+		        	jFile.close();
+		        }
 	 
 	        } catch (IOException e) {
 	            e.printStackTrace();
 	 
 	        } finally {
 	        	console("JSON written successfully...\n");
-	        	return "OK";
 	        }
+	        return obj.toJSONString();
 	   }
-		
-		public boolean isSelected(String label, String[] columns) {
-
-			if(columns == null) {
-				return true;
-			}
-			
-			for(int m=0;m<columns.length;m++) {
-				if(label.equals(columns[m])) {
-					return true;
-				} //end if
-			} //end criteria loop
-
-			return false;
-		
-		}
 	   
 	   public void console(String sz) {
 		   

@@ -1,6 +1,7 @@
 package com.sidacoja.utils;
 
 import java.io.File;
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +12,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
 
 public class SourceDataXML implements SourceData {
 
@@ -25,11 +27,18 @@ public class SourceDataXML implements SourceData {
 		
 		  try {
 			  
-				File fXmlFile = new File(input);
 				DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 				DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-				Document doc = dBuilder.parse(fXmlFile);
-				doc.getDocumentElement().normalize();
+				Document doc = null;
+
+				File fXmlFile = new File(input);
+				if(fXmlFile.exists()) {
+					doc = dBuilder.parse(fXmlFile);
+					doc.getDocumentElement().normalize();					
+				} else {
+					doc = dBuilder.parse(new InputSource(new StringReader(input)));
+					doc.getDocumentElement().normalize();
+				}
 				
 				Element element = doc.getDocumentElement();
 				//console("Root element :" + element.getNodeName());

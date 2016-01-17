@@ -2,9 +2,6 @@ package com.sidacoja.utils;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -13,6 +10,7 @@ import java.util.List;
 public class TargetDataJDBC  implements TargetData {
 	
 	private String table = "";
+	private Common common = new Common();
 
 	public String getTable() {
 		return table;
@@ -27,8 +25,8 @@ public class TargetDataJDBC  implements TargetData {
 		
     	List<Row> listRows = cache.getList();
     	Row rowZero = new Row();
-    	boolean firstIteration = true;
-		List<String> labels= new ArrayList<String>();
+    	//boolean firstIteration = true;
+		//List<String> labels= new ArrayList<String>();
 		List<String> values= new ArrayList<String>();
 		String sz = "";
     	rowZero = listRows.get(0);
@@ -36,7 +34,7 @@ public class TargetDataJDBC  implements TargetData {
     	console("target url: "+url);
     	console("target table: "+table);
 		Connection conn = null;
-		PreparedStatement pStmt = null;
+		//PreparedStatement pStmt = null;
 		Statement stmt = null;
 
 		try{
@@ -56,14 +54,14 @@ public class TargetDataJDBC  implements TargetData {
 	        String createTable = "CREATE TABLE "+table+" (";
 	        console("createTable for "+listCells.size()+" columns");
 	        for(Cell cell: listCells) {
-	        	if(isSelected(cell.getLabel(), columns)) {
+	        	if(common.isSelected(cell.getLabel(), columns)) {
 	        		if(inProcess) {
 	        			createTable = createTable.concat(",\""+cell.getLabel()+"\" "); }
 	        		else {
 	        			inProcess = true;
 	        			createTable = createTable.concat("\""+cell.getLabel()+"\" "); }
 	        		if("Double".equals(cell.getDataType())) {
-	        			createTable = createTable.concat("Float");} //Double Precision
+	        			createTable = createTable.concat("Decimal(17,2)");} //Float? Double Precision?
 	        		else {
 		        		if("String".equals(cell.getDataType())) {
 		        			createTable = createTable.concat("Varchar(254)");}
@@ -88,7 +86,7 @@ public class TargetDataJDBC  implements TargetData {
         	values = new ArrayList<String>();
         	listCells = row.getList();
         	for(Cell cell: listCells) {
-        		if(row.isSelected()&& isSelected(cell.getLabel(), columns)) {
+        		if(row.isSelected()&& common.isSelected(cell.getLabel(), columns)) {
         			if("INTEGER".equals( cell.getDataType() ) ) {
         				values.add(cell.getValue());
         			}
@@ -148,22 +146,6 @@ public class TargetDataJDBC  implements TargetData {
 	   
 	}
      	       	
-    public boolean isSelected(String label, String[] columns) {
-        	
-      	if(columns==null) {
-        	return true;
-      	}
-        
-      	for(int m=0;m<columns.length;m++) {
-       		if(label.equals(columns[m])) {
-      			return true;
-      		} //end if
-        } //end criteria loop
-
-        return false;
-        	
-    }
-        	        	
     public void console(String sz) {
     	System.out.println(sz);
     }

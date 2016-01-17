@@ -1,11 +1,9 @@
 package com.sidacoja.utils;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 
 /**
  * convert one input type to another
@@ -25,6 +23,7 @@ public class BatchApplication {
 	private static String outputTable;
 	
 	private static boolean envFound = false;
+	private static Common common = new Common();
 
 /*
  * provide interface to sidacoja from batch environment	
@@ -33,7 +32,7 @@ public class BatchApplication {
 
     	console("sidacoja utilitites");
     	
-    	//retrieve environment variaables
+    	//retrieve environment variables if provided
     	envFound = checkEnvironment();
 
     	//need environment variables or parms from arguments 
@@ -57,19 +56,19 @@ public class BatchApplication {
     	}
 
     	//update sidacoja with input variables
-		if(!isNullOrEmpty(input)) {
+		if(!common.isNullOrEmpty(input)) {
 			sdcj.input(input);
 			console("input: "+input);
 		}
-		if(!isNullOrEmpty(inputType)) {
+		if(!common.isNullOrEmpty(inputType)) {
 			sdcj.inputType(inputType);
 			console("inputType: "+inputType);
 		}
-		if(!isNullOrEmpty(output)) {
+		if(!common.isNullOrEmpty(output)) {
 			sdcj.output(output);
 			console("output: "+output);
 		}
-		if(!isNullOrEmpty(outputType)) {
+		if(!common.isNullOrEmpty(outputType)) {
 			sdcj.outputType(outputType);
 			console("outputType: "+outputType);
 		}
@@ -85,16 +84,15 @@ public class BatchApplication {
 			sdcj.addFilter(filters.get(0));
 			console(filters.size()+" filters provided");
 		}
-		
 		if(cacheOnly) { 
 			sdcj.setCacheOnly(cacheOnly); 
 			console("cacheOnly: "+cacheOnly);
 		}
-		if(!isNullOrEmpty(table)) { 
+		if(!common.isNullOrEmpty(table)) { 
 			sdcj.setTable(table); 
 			console("table: "+table);
 		}
-		if(!isNullOrEmpty(outputTable)) { 
+		if(!common.isNullOrEmpty(outputTable)) { 
 			sdcj.setTable(outputTable); 
 			console("outputTable: "+outputTable);			
 		}
@@ -115,19 +113,9 @@ public class BatchApplication {
   */
     public static boolean checkEnvironment() {
     	boolean wasFound = false;
-    	String[] vars = {"input",
-    			"inputType",
-    			"columns",
-    			"sequencers",
-    			"filters",
-    			"cacheOnly",
-    			"output",
-    			"outputType",
-    			"table",
-    			"outputTable"};
+    	//String[] vars = {"input","inputType","columns","sequencers","filters","cacheOnly","output","outputType","table","outputTable"};
     	
     	Map<String,String> env = System.getenv();
-    	//Properties env = System.getProperties();    	
     	//dumpVars(env);
 
     	List<String> keys = new ArrayList<String>(env.keySet());
@@ -153,7 +141,7 @@ public class BatchApplication {
         		if("filters".equals(key)) {
         			//every filter is an array - filter is a list of arrays
         			String filterString = (String) env.get(key);
-        			if(isNullOrEmpty(filterString)) {
+        			if(common.isNullOrEmpty(filterString)) {
         				console("filters not found");
         			} else {
             			String[] oneFilter = loadStringArray((String) env.get(key));
@@ -206,24 +194,10 @@ public class BatchApplication {
     	return szArray;
     	
     }
- 
-	public static boolean isNullOrEmpty(String sz) {
-		boolean result = false;
-		
-		if(sz == null) { 
-			result = true;
-		} else {
-			if(sz.isEmpty()) { 
-				result = true;
-			}
-		}
-		
-		return result;
-		
-	}
+
 /*
- * test method to review system environment
- */
+ * test method to display environment variables
+ 
 	private static void dumpVars(Map<String, ?> m) {
 		  List<String> keys = new ArrayList<String>(m.keySet());
 		  Collections.sort(keys);
@@ -231,7 +205,7 @@ public class BatchApplication {
 		    System.out.println(k + " : " + m.get(k));
 		  }
 	}
-	
+*/	
     public static void console(String sz) {
     	System.out.println(sz);
     }
