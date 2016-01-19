@@ -17,7 +17,7 @@ set filters=OR,ID,NE,100
 
 set cacheOnly=false;
 
-::show me what you did
+::display values
 echo on
 
 set input 

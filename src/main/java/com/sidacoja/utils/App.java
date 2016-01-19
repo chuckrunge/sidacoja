@@ -8,17 +8,18 @@ public class App
 {
     public static void main( String[] args ) {
 
-    	//final String DB_URL = "jdbc:hsqldb:hsql://localhost:9001/mdb";
+    	final String DB_URL = "jdbc:hsqldb:hsql://localhost:9001/mdb";
     	//final String USER = "sa";
     	//final String PSWD = "";
 
     	Sidacoja sdcj = new Sidacoja();
     	
     	//("{\"rootElement\":\"RootElement\",\"List\":{\"Row 2\":[{\"Sponsor\":\"Paypal3\"},{\"Member\":\"Google2\"},{\"Contact\":\"eBay1\"}],\"Row 1\":[{\"Sponsor\":\"Paypal1\"},{\"Member\":\"Google3\"},{\"Contact\":\"eBay2\"}],\"Row 0\":[{\"Sponsor\":\"Paypal2\"},{\"Member\":\"Google1\"},{\"Contact\":\"eBay3\"}]}}");
-    	sdcj.input("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><RootElement><Row rowId=\"0\"><Sponsor>Paypal2</Sponsor><Member>Google1</Member><Contact>eBay3</Contact></Row><Row rowId=\"1\"><Sponsor>Paypal1</Sponsor><Member>Google3</Member><Contact>eBay2</Contact></Row><Row rowId=\"2\"><Sponsor>Paypal3</Sponsor><Member>Google2</Member><Contact>eBay1</Contact></Row></RootElement>");
+    	//sdcj.input("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><RootElement><Row rowId=\"0\"><Sponsor>Paypal2</Sponsor><Member>Google1</Member><Contact>eBay3</Contact></Row><Row rowId=\"1\"><Sponsor>Paypal1</Sponsor><Member>Google3</Member><Contact>eBay2</Contact></Row><Row rowId=\"2\"><Sponsor>Paypal3</Sponsor><Member>Google2</Member><Contact>eBay1</Contact></Row></RootElement>");
     	//("./resources/inputFile1.json");
-    	sdcj.inputType("xml");
-    	//sdcj.setTable("copyTable"); //Employees
+    	sdcj.input(DB_URL);
+    	sdcj.inputType("jdbc");
+    	sdcj.setTable("copyTable"); //Employees
     	
     	//sdcj.columns(new String[]{"Sponsor", "Member", "Contact"});
     	//sdcj.sequence(new String[]{"Sponsor"}); 
@@ -28,12 +29,12 @@ public class App
     	
     	//sdcj.setCacheOnly(true);
     	
-    	//sdcj.output(DB_URL);
-    	//sdcj.setOutputTable("copyTable");
-    	//sdcj.outputType("jdbc");
+    	sdcj.output("jdbc:sqlserver://CHUCK-PC\\SQLSERVERADVSP2;database=chuckDB;integratedSecurity=true;user=Chuck-PC\\Chuck;");
+    	sdcj.setOutputTable("copyTable");
+    	sdcj.outputType("jdbc");
     	
-    	sdcj.output("no file required");	//("./sidacoja.xml");
-    	sdcj.outputType("json");
+    	//sdcj.output("no file required");	//("./sidacoja.xml");
+    	//sdcj.outputType("json");
     	
     	RowCache cache = new RowCache();
     	try {

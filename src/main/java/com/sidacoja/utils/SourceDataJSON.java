@@ -14,7 +14,6 @@ public class SourceDataJSON implements SourceData{
 
 	public RowCache processInput(String file) {
 		
-		console(file);
 		RowCache cache = new RowCache();
 		List<Row> rows = new ArrayList<Row>();
 		List<Cell> cells = new ArrayList<Cell>();
@@ -28,6 +27,7 @@ public class SourceDataJSON implements SourceData{
  
         	File checkIt = new File(file);
         	if(checkIt.exists()) {
+        		console("input: "+file);
                 Object obj = parser.parse(new FileReader(file));
                 jsonObject = (JSONObject) obj;        		
         	} else {

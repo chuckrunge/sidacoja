@@ -22,7 +22,6 @@ public class TargetDataXML {
 
 	   public String processOutput(RowCache cache, String[] columns, String file) {
 		   
-		   console(file);
 		   String xmlReq = null;
 		   List<Row> rows = cache.getList();
 		   Common common = new Common();
@@ -73,6 +72,7 @@ public class TargetDataXML {
 					Transformer transformer = transformerFactory.newTransformer();
 					DOMSource source = new DOMSource(doc);
 					if(outFile.exists()) { 
+						console("output: "+file);
 						StreamResult result = new StreamResult(outFile); //new File(file)
 						transformer.transform(source, result);
 					}

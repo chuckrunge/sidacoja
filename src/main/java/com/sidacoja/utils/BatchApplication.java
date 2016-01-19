@@ -113,7 +113,6 @@ public class BatchApplication {
   */
     public static boolean checkEnvironment() {
     	boolean wasFound = false;
-    	//String[] vars = {"input","inputType","columns","sequencers","filters","cacheOnly","output","outputType","table","outputTable"};
     	
     	Map<String,String> env = System.getenv();
     	//dumpVars(env);
@@ -196,7 +195,7 @@ public class BatchApplication {
     }
 
 /*
- * test method to display environment variables
+ * a method to display all environment variables
  
 	private static void dumpVars(Map<String, ?> m) {
 		  List<String> keys = new ArrayList<String>(m.keySet());

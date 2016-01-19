@@ -33,6 +33,7 @@ public class SourceDataXML implements SourceData {
 
 				File fXmlFile = new File(input);
 				if(fXmlFile.exists()) {
+					console("input: "+input);
 					doc = dBuilder.parse(fXmlFile);
 					doc.getDocumentElement().normalize();					
 				} else {

@@ -25,8 +25,6 @@ public class TargetDataJDBC  implements TargetData {
 		
     	List<Row> listRows = cache.getList();
     	Row rowZero = new Row();
-    	//boolean firstIteration = true;
-		//List<String> labels= new ArrayList<String>();
 		List<String> values= new ArrayList<String>();
 		String sz = "";
     	rowZero = listRows.get(0);
@@ -34,7 +32,6 @@ public class TargetDataJDBC  implements TargetData {
     	console("target url: "+url);
     	console("target table: "+table);
 		Connection conn = null;
-		//PreparedStatement pStmt = null;
 		Statement stmt = null;
 
 		try{
@@ -69,8 +66,8 @@ public class TargetDataJDBC  implements TargetData {
 			        		createTable = createTable.concat(cell.getDataType());}
 	        		}
 //	        		createTable = createTable.concat(cell.getDataType());
-	        	}
-	        }
+	        	} //end if
+	        } //end cell loop
 	        createTable = createTable.concat(")");
 	        console(createTable);
 			stmt.executeUpdate(createTable);
@@ -87,6 +84,7 @@ public class TargetDataJDBC  implements TargetData {
         	listCells = row.getList();
         	for(Cell cell: listCells) {
         		if(row.isSelected()&& common.isSelected(cell.getLabel(), columns)) {
+        			//console("TargetDataJDBC "+cell.getDataType()+" = "+cell.getValue());
         			if("INTEGER".equals( cell.getDataType() ) ) {
         				values.add(cell.getValue());
         			}
@@ -99,7 +97,7 @@ public class TargetDataJDBC  implements TargetData {
         			if("Date".equals( cell.getDataType() ) ) {
         				values.add("'"+cell.getValue()+"'");
         			}
-        			if("VARCHAR".equals(cell.getDataType()) ) {
+        			if(cell.getDataType().contains("VARCHAR")) {
         				values.add("'"+cell.getValue()+"'");
         			}
         			if("String".equals(cell.getDataType()) ) {
@@ -126,7 +124,6 @@ public class TargetDataJDBC  implements TargetData {
             		i++;
             	}
             	sz = sz.concat(");");
-            	//console(sz);
     			stmt.executeUpdate(sz);
         		
         	}
