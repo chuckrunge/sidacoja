@@ -19,9 +19,44 @@ Sidacoja provides methods for simple selection, sorting, and translation for tab
 Tabular data in any of the listed formats can be read or written.  Or a table read in one format can be written in another format.  If no selection criteria is supplied, the entire file will be written.
 
 WHAT IS SIDACOJA GOOD FOR?
-A database table can be dumped to a spreadsheet.  Or a spreadsheet can be loaded back to the database.  JSON input can be received as a Java object for further processing.  An XML table can be processed in the same way.  And when you're done, you can write it out as a csv or any other format.  
+A database table can be dumped to a spreadsheet.  Or a spreadsheet can be loaded back to the database.  JSON input can be received as a Java object for further processing.  An XML table can be processed in the same way.  And when you're done, you can write it out as a csv or any other format.
 
-Each type is processed by it's own input class, and each type has it's own output class.  A common format of rows and cells called RowCache is used in between.  A RowCache contains a collection of rows, and each row contains a collection of cells.
+EXAMPLES
+
+Example 1: copy a database table for backup
+sidacoja_copy_table_to_table.cmd (batch example)
+
+Example 2: extract rows from table for testing
+sidacoja_copy_table_to_table.cmd (batch example)
+
+Example 3: dump a table to csv
+sidacoja_dump_table_to_csv.cmd (batch example)
+
+Example 4: copy a database table to a spreadsheet
+sidacoja_dump_table_to_xls.cmd (batch example)
+
+Example 5: load a spreadsheet into a database
+sidacoja_load_table_from_xls.cmd (batch example)
+   
+Example 6: translate json to xml for processing in memory
+ExampleInMemory.java (online example)
+
+Example 7 load an external properties table to xml in memory
+ExampleProperties.java (online example)
+
+
+REQUIRED LIBRARIES
+
+Please note that several jar files might be needed on the classpath to support the operation in process.
+-commons-csv-1.1.jar for CSV files
+-poi-3.13.jar for XLS files
+-json-simple-1.1.1.jar for JSON files
+-JDBC driver for your database
+
+
+PROCESSING
+
+Each data type is processed by it's own input class, and each type has it's own output class.  A common format of rows and cells called RowCache is used in between.  A RowCache contains a collection of rows, and each row contains a collection of cells.
 
 For each run, one file is input, and one file is output, along with an explicit file type for each.  These parameters are required.
 
@@ -93,6 +128,8 @@ An example using all of the above, both required and optional, is shown below.
     	
     	RowCache cache = sdjc.fire();
 		
+		The RowCache object is returned for inspection or further processing.  The cacheOnly parameter is available to stop work after loading the RowCache object.  Set cacheOnly to true if the RowCache is all you need. 
+		
 		
 JDBC EXAMPLE
 ============		
@@ -145,10 +182,7 @@ Example:
 BATCH EXECUTION
 ===============
 
-A main method is provided for batch execution.  Please note that several jar files might be needed on the classpath to support the operation in process.
--commons-csv-1.1.jar for CSV files
--poi-3.13.jar for XLS files
--json-simple-1.1.1.jar for JSON files
+A main method is provided for batch execution (BatchApplication class).
 
 The batch interface as provided expects an input file, input type, output file, and output type, in that order.  The program can be used for simple conversion between supported types.  
 
@@ -167,3 +201,6 @@ set sequencers = "CURRENCY1","CURRENCY2","AMOUNT","SETTLEMENT","ACCOUNT"
 set filters = "OR","CURRENCY1","EQ","USD"
 
 set cacheOnly = false;
+
+::execute batch interface
+java -cp sidacoja-utils.0.1.0-SNAPSHOT.jar; com.sidacoja.utils.BatchApplication
