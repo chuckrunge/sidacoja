@@ -11,9 +11,9 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 
 You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA. 
 
-*===============================================*
+
 SIDACOJA
-*===============================================*
+
 Sidacoja provides methods for simple selection, sorting, and translation for tabular data contained in JDBC, XLS, CSV, XML or JSON format.  A spreadsheet is a good example of the type of data supported.  In JSON or XML, a table appears as an array of rows.
   
 Tabular data in any of the listed formats can be read or written.  Or a table read in one format can be written in another format.  If no selection criteria is supplied, the entire file will be written.
