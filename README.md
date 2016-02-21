@@ -48,10 +48,10 @@ ExampleProperties.java (online example)
 REQUIRED LIBRARIES
 
 Please note that several jar files might be needed on the classpath to support the operation in process.
--commons-csv-1.1.jar for CSV files
--poi-3.13.jar for XLS files
--json-simple-1.1.1.jar for JSON files
--JDBC driver for your database
+1) commons-csv-1.1.jar for CSV files
+2) poi-3.13.jar for XLS files
+3) json-simple-1.1.1.jar for JSON files
+4) JDBC driver for your database
 
 
 PROCESSING
