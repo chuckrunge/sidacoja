@@ -1,9 +1,9 @@
 package com.sidacoja.utils;
 
 /**
- * In Memory Example - JSON to XML
- * A received JSON string is converted to XML without reading files. 
- * A user application might then load custom object or pass as string.
+ * Properties Example
+ * Load a database table into memory, and  
+ * return the contents in an XML string
  */
 public class ExampleProperties
 {

@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<ROWSET>
+	<!-- additional rows ... -->
+    <ROW num="1"> 
+        <SIDACOJA.PROP.1>value1</SIDACOJA.PROP.1>
+        <SIDACOJA.PROP.2>value2</SIDACOJA.PROP.2>
+        <SIDACOJA.PROP.3>value3</SIDACOJA.PROP.3>
+        <SIDACOJA.PROP.4>value4</SIDACOJA.PROP.4>
+    </ROW>
+ </ROWSET>

@@ -13,7 +13,7 @@ public class RowCache {
 		this.list = list;
 	}
 
-	RowCache(){}
+	public RowCache(){}
 	
 	Map<String,String> simpleAttr = new LinkedHashMap<String,String>();
 

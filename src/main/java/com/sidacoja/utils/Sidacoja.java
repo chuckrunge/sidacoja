@@ -25,7 +25,7 @@ import java.util.List;
 
 public class Sidacoja {
 
-	Sidacoja(){}
+	public Sidacoja(){}
 	private String input;
 	private String inputType;
 	private String[] columns = null;
