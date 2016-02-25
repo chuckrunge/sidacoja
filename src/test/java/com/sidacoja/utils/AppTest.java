@@ -56,9 +56,9 @@ public class AppTest
     			"Case Number", "Arrest"
     	});
     	
-    	sdcj.addFilter(new String[]{"OR", "Primary Type","EQ","THEFT"});
-    	sdcj.addFilter(new String[]{"OR", "Primary Type","EQ","BATTERY"});
-    	sdcj.addFilter(new String[]{"OR", "Primary Type","EQ","BURGLARY"});
+    	sdcj.addFilter(new String[]{"IF", "Primary Type","EQ","THEFT"});
+    	sdcj.addFilter(new String[]{"IF", "Primary Type","EQ","BATTERY"});
+    	sdcj.addFilter(new String[]{"IF", "Primary Type","EQ","BURGLARY"});
     	
     	sdcj.output("./sidacoja.XLS");
     	sdcj.outputType("XLS");
@@ -102,7 +102,7 @@ public class AppTest
     			"First Name","Last Name","UserID","Date"
     	});
 
-    	sdcj.addFilter(new String[]{"OR", "Last Name","EQ","Rugher"});
+    	sdcj.addFilter(new String[]{"IF", "Last Name","EQ","Rugher"});
     	
     	sdcj.output("./sidacoja.csv");
     	sdcj.outputType("CSV");
@@ -146,7 +146,7 @@ public class AppTest
     	sdcj.sequence(new String[]{
     			"AMOUNT","ACCOUNT"
 		});
-    	sdcj.addFilter(new String[] {"OR","CURRENCY1","EQ", "USD"});
+    	sdcj.addFilter(new String[] {"IF","CURRENCY1","EQ", "USD"});
     	
     	sdcj.output("./sidacoja.xml");
     	sdcj.outputType("XML");

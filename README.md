@@ -90,7 +90,7 @@ Or the table can be sorted on specific columns.  Of course, sorted columns must 
 
 And, if you'd like to pull a subset, columns and values can be specified for row selection.  Any one of these is enough to select a row.
 
-    	addFilter(new String[]{"OR", "Primary Type","EQ","THEFT"});
+    	addFilter(new String[]{"IF", "Primary Type","EQ","THEFT"});
     	addFilter(new String[]{"OR", "Primary Type","EQ","BATTERY"});
     	addFilter(new String[]{"OR", "Primary Type","EQ","BURGLARY"});
 
@@ -119,7 +119,7 @@ An example using all of the above, both required and optional, is shown below.
     			"Case Number", "Arrest"
     	});
     	
-    	sdjc.addFilter(new String[]{"OR", "Primary Type","EQ","THEFT"});
+    	sdjc.addFilter(new String[]{"IF", "Primary Type","EQ","THEFT"});
     	sdjc.addFilter(new String[]{"OR", "Primary Type","EQ","BATTERY"});
     	sdjc.addFilter(new String[]{"OR", "Primary Type","EQ","BURGLARY"});
     	
@@ -163,18 +163,21 @@ JDBC EXAMPLE
 ADVANCED DATA SELECTION
 =======================
 
-Basic AND / OR logic is supported.  OR begins a new criterion.  AND ties a criterion to the previous one.  
-So AND will string multiple criteria together, and they all must be true.
+Basic AND / OR logic is supported.  IF begins a new criterion.  AND ties a criterion to the previous one.  
+So AND will string multiple criteria together, and they all must be true.  OR begins another criterion.
 
 Example:
-    	sdjc.addFilter(new String[]{"OR", "Last Name","EQ","Smith"});
+    	sdjc.addFilter(new String[]{"IF", "Last Name","EQ","Smith"});
     	sdjc.addFilter(new String[]{"AND", "First Name","EQ","John"});
     	sdjc.addFilter(new String[]{"AND", "City","EQ","Johnsonville"});
+    	sdjc.addFilter(new String[]{"OR", "Last Name","EQ","Johnson"});
+    	sdjc.addFilter(new String[]{"AND", "First Name","EQ","James"});
+    	sdjc.addFilter(new String[]{"AND", "City","EQ","Smithton"});
 
 EQ (equals) is the most specific way to identify rows, but NE (not equal) is also supported.  If excluding rows is simpler, NE is also available.
 
 Example:
-    	sdjc.addFilter(new String[]{"OR", "Last Name","EQ","Smith"});
+    	sdjc.addFilter(new String[]{"IF", "Last Name","EQ","Smith"});
     	sdjc.addFilter(new String[]{"AND", "First Name","EQ","John"});
     	sdjc.addFilter(new String[]{"AND", "City","NE","Johnsonville"});
 
@@ -198,9 +201,9 @@ set outputType = CSV
 
 set columns = "CURRENCY1","CURRENCY2","AMOUNT","SETTLEMENT","ACCOUNT"
 set sequencers = "CURRENCY1","CURRENCY2","AMOUNT","SETTLEMENT","ACCOUNT"
-set filters = "OR","CURRENCY1","EQ","USD"
+set filters = "IF","CURRENCY1","EQ","USD"
 
 set cacheOnly = false;
 
 ::execute batch interface
-java -cp sidacoja-utils.0.1.0-SNAPSHOT.jar; com.sidacoja.utils.BatchApplication
+java -cp sidacoja-utils.0.1.0-RELEASE.jar; com.sidacoja.utils.BatchApplication

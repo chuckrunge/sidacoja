@@ -144,7 +144,7 @@ public class Sidacoja {
    		
    		if(filters.size()>0) {
    			for(String[] filter: filters) {
-   				if((!"AND".equals(filter[0]) && !"OR".equals(filter[0])) ) {
+   				if(!"AND".equals(filter[0]) && !"OR".equals(filter[0]) && !"IF".equals(filter[0]) ) {
    					throw new Exception(filter[0]+" is not valid in filter. First value must be AND or OR");
    				}
    				if((!"EQ".equals(filter[2]) && !"NE".equals(filter[2])) ) {
@@ -261,13 +261,13 @@ public class Sidacoja {
     					if(cell.getValue().equals(filter[3])) {
     						//cell value matches filter
     						cell.setSelected(true);
-    						if(filter[2].equals("EQ")){
+    						if( "EQ".equals(filter[2]) ){
      							//select row
-    							if(filter[0].equals("OR") ){
+    							if( "IF".equals(filter[0]) || "OR".equals(filter[0]) ){
     								row.setSelected(true);
     								rowWasSelected = row.isSelected();
     							}
-    							if(filter[0].equals("AND") ){
+    							if("AND".equals(filter[0]) ){
     								if(rowWasSelected) {
     									row.setSelected(true);
     									rowWasSelected = row.isSelected();
@@ -276,16 +276,16 @@ public class Sidacoja {
     							//console("dark hole #1");
     						}
 							//cell value matches;
-    						if(filter[2].equals("NE")){
-    							if( (filter[0].equals("OR")) || (filter[0].equals("AND") && rowWasSelected) ){
+    						if( "NE".equals(filter[2]) ){
+    							if( ("IF".equals(filter[0]) || "OR".equals(filter[0])) || ("AND".equals(filter[0]) && rowWasSelected) ){
     								row.setSelected(false);
     							}
     							rowWasSelected = row.isSelected();
     						}
     					} else {
     						//cell value does not match
-    						if(filter[2].equals("NE")){
-    							if( (filter[0].equals("OR")) || (filter[0].equals("AND") && rowWasSelected) ){
+    						if( "NE".equals(filter[2])){
+    							if( ("IF".equals(filter[0]) || "OR".equals(filter[0])) || ("AND".equals(filter[0]) && rowWasSelected) ){
     								row.setSelected(true);
     							}
     							rowWasSelected = row.isSelected();

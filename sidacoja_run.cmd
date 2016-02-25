@@ -31,6 +31,6 @@ set filters
 set cacheOnly
 
 cd \Users\Chuck\Documents\workspace-sidacoja\sidacoja-utils\target\
-java -cp sidacoja-utils.0.1.0-SNAPSHOT.jar; com.sidacoja.utils.BatchApplication
+java -cp sidacoja-utils.0.1.0-RELEASE.jar; com.sidacoja.utils.BatchApplication
 cd /D %cmdHome%
 set cmdHome =

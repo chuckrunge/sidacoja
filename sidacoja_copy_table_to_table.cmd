@@ -33,7 +33,7 @@ set filters=OR,ID,NE,100
 
 ::execute batch interface
 cd \Users\Chuck\Documents\workspace-sidacoja\sidacoja-utils\target\
-java -cp sidacoja-utils.0.1.0-SNAPSHOT.jar; com.sidacoja.utils.BatchApplication
+java -cp sidacoja-utils.0.1.0-RELEASE.jar; com.sidacoja.utils.BatchApplication
 
 ::go back where you started
 cd /D %cmdHome%
