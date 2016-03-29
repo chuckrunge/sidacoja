@@ -147,8 +147,8 @@ public class Sidacoja {
    				if(!"AND".equals(filter[0]) && !"OR".equals(filter[0]) && !"IF".equals(filter[0]) ) {
    					throw new Exception(filter[0]+" is not valid in filter. First value must be AND or OR");
    				}
-   				if((!"EQ".equals(filter[2]) && !"NE".equals(filter[2])) ) {
-   					throw new Exception(filter[2]+" is not valid in filter. Third value must be EQ or NE");
+   				if((!"EQ".equals(filter[2]) && !"NE".equals(filter[2]) && !"LIKE".equals(filter[2]) ) ) {
+   					throw new Exception(filter[2]+" is not valid in filter. Third value must be EQ, NE or LIKE");
    				}
    			}
    			
@@ -258,10 +258,10 @@ public class Sidacoja {
        			
     				if(cell.getLabel().equals(filter[1])) {
     					//cell label matches filter!
-    					if(cell.getValue().equals(filter[3])) {
+    					if(cell.getValue().equals(filter[3])  || isLike(cell.getValue(), filter[3]) ) {
     						//cell value matches filter
     						cell.setSelected(true);
-    						if( "EQ".equals(filter[2]) ){
+    						if( "EQ".equals(filter[2]) || "LIKE".equals(filter[2]) ){
      							//select row
     							if( "IF".equals(filter[0]) || "OR".equals(filter[0]) ){
     								row.setSelected(true);
@@ -369,6 +369,43 @@ public class Sidacoja {
 		
 		return result;
 		
+	}
+	public boolean isLike(String targetSz, String testSz) {
+		boolean startFlag = false, endFlag = false;
+		StringBuffer cleanSz = new StringBuffer();
+		cleanSz.append(testSz);
+		
+		if(testSz.startsWith("%") || testSz.startsWith("_")) {
+			cleanSz.replace(0, cleanSz.length(), testSz.substring(1) );
+			startFlag = true;
+		}
+		if(testSz.endsWith("%") || testSz.endsWith("_")) {
+			cleanSz.replace(0, cleanSz.length(), cleanSz.toString().substring(0,(cleanSz.length()-1) ) );
+			endFlag = true;
+		}
+		if(!startFlag && !endFlag) {
+			return false;
+		}
+		
+		//console("scan "+targetSz+ " for "+cleanSz+" "+startFlag+" "+endFlag);
+		
+		if(startFlag && endFlag) {
+			if(targetSz.contains(cleanSz)) {
+				return true;
+			}
+		}
+		if(startFlag) {
+			if( targetSz.endsWith(cleanSz.toString()) || targetSz.contains(cleanSz.toString())) {
+				return true;
+			}
+		}
+		if(endFlag) {
+			if(targetSz.startsWith(cleanSz.toString())) {
+				return true;
+			}
+		}
+		
+		return false;
 	}
 		
 }

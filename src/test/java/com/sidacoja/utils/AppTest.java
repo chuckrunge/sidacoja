@@ -56,7 +56,7 @@ public class AppTest
     			"Case Number", "Arrest"
     	});
     	
-    	sdcj.addFilter(new String[]{"IF", "Primary Type","EQ","THEFT"});
+    	sdcj.addFilter(new String[]{"IF", "Primary Type","EQ","THEFT%"});
     	sdcj.addFilter(new String[]{"IF", "Primary Type","EQ","BATTERY"});
     	sdcj.addFilter(new String[]{"IF", "Primary Type","EQ","BURGLARY"});
     	
@@ -102,7 +102,7 @@ public class AppTest
     			"First Name","Last Name","UserID","Date"
     	});
 
-    	sdcj.addFilter(new String[]{"IF", "Last Name","EQ","Rugher"});
+    	sdcj.addFilter(new String[]{"IF", "Last Name","LIKE","%Rugher%"});
     	
     	sdcj.output("./sidacoja.csv");
     	sdcj.outputType("CSV");

@@ -54,6 +54,10 @@ Please note that several jar files might be needed on the classpath to support t
 4) JDBC driver for your database
 
 
+RELEASE NOTES - 0.1.1
+- Added support for LIKE in row filter (it saves typing in long strings for selection).
+
+
 PROCESSING
 
 Each data type is processed by it's own input class, and each type has it's own output class.  A common format of rows and cells called RowCache is used in between.  A RowCache contains a collection of rows, and each row contains a collection of cells.

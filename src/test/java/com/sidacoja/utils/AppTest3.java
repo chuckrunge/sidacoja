@@ -55,9 +55,9 @@ public class AppTest3
     	sdcj.addFilter(new String[]{"OR","Date","EQ","11/11/2011"});
     	
     	sdcj.addFilter(new String[]{"OR","UserID",	"EQ","U004454"});
-    	sdcj.addFilter(new String[]{"AND","First Name","EQ","Chuck"});
+    	sdcj.addFilter(new String[]{"AND","First Name","LIKE","%Chuck"});
 
-    	sdcj.addFilter(new String[]{"OR","First Name","EQ","Darius"});
+    	sdcj.addFilter(new String[]{"OR","First Name","LIKE","Darius%"});
     	
     	sdcj.output("./sidacoja.csv");
     	sdcj.outputType("CSV");
@@ -184,7 +184,7 @@ public class AppTest3
     	sdcj.addFilter(new String[]{"OR","Last Name","EQ","Rugher"});
     	sdcj.addFilter(new String[]{"AND","First Name","NE","Chuck"});
 
-    	sdcj.addFilter(new String[]{"OR","First Name","EQ","Darius"});
+    	sdcj.addFilter(new String[]{"OR","First Name","LIKE","%Darius%"});
     	
     	//*==>output parms not required for cache-only
     	sdcj.output("./sidacoja.csv");
