@@ -203,7 +203,7 @@ public class AppTest3
     	
     	//number of data rows equals number of rows in cache
         //console("cache size: "+cache.getList().size());
-        //assertTrue(9 == cache.getList().size() );
+        assertTrue(9 == cache.getList().size() );
 
         //number of data rows written equals number of rows selected
         assertTrue(5 == cache.countSelected() );

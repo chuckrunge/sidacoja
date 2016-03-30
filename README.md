@@ -53,6 +53,8 @@ Please note that several jar files might be needed on the classpath to support t
 3) json-simple-1.1.1.jar for JSON files
 4) JDBC driver for your database
 
+RELEASE NOTES - 0.1.2
+- Added support for NOTLIKE in row filter.
 
 RELEASE NOTES - 0.1.1
 - Added support for LIKE in row filter (it saves typing in long strings for selection).

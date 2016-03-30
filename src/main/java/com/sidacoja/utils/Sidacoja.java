@@ -141,18 +141,33 @@ public class Sidacoja {
    				}
    			}
    		}
-   		
+   		boolean firstRow = true;
    		if(filters.size()>0) {
    			for(String[] filter: filters) {
-   				if(!"AND".equals(filter[0]) && !"OR".equals(filter[0]) && !"IF".equals(filter[0]) ) {
-   					throw new Exception(filter[0]+" is not valid in filter. First value must be AND or OR");
-   				}
-   				if((!"EQ".equals(filter[2]) && !"NE".equals(filter[2]) && !"LIKE".equals(filter[2]) ) ) {
-   					throw new Exception(filter[2]+" is not valid in filter. Third value must be EQ, NE or LIKE");
-   				}
-   			}
+   				if(firstRow) {	//IF must only be on first row.
+   					firstRow = false;
+   	   				if(!"AND".equals(filter[0]) && !"OR".equals(filter[0]) && !"IF".equals(filter[0]) ) {
+   	   					throw new Exception(filter[0]+" is not valid in filter. Value in first row must be IF, AND, or OR");
+   	   				}
+   	   				if((!"EQ".equals(filter[2]) && !"NE".equals(filter[2]) && !"LIKE".equals(filter[2]) && !"NOTLIKE".equals(filter[2]) ) ) {
+   	   					throw new Exception(filter[2]+" is not valid in filter. Third value must be EQ, NE, LIKE, or NOTLIKE");
+   	   				}
+   					 
+   				} else {
+   					
+   					if(!"AND".equals(filter[0]) && !"OR".equals(filter[0]) ) {
+   						throw new Exception(filter[0]+" is not valid in filter. First value in row must be AND, or OR");
+   					}
+   					if((!"EQ".equals(filter[2]) && !"NE".equals(filter[2]) && !"LIKE".equals(filter[2]) && !"NOTLIKE".equals(filter[2]) ) ) {
+   						throw new Exception(filter[2]+" is not valid in filter. Third value must be EQ, NE, LIKE, or NOTLIKE");
+   					}
+   					
+   				} //end else
+
+   			} //end for
    			
-   		}
+ 		}
+
    		RowCache cache = new RowCache();
 
    		switch( inputType.toUpperCase().trim() ) {
@@ -276,7 +291,7 @@ public class Sidacoja {
     							//console("dark hole #1");
     						}
 							//cell value matches;
-    						if( "NE".equals(filter[2]) ){
+    						if( "NE".equals(filter[2]) || "NOTLIKE".equals(filter[2]) ){
     							if( ("IF".equals(filter[0]) || "OR".equals(filter[0])) || ("AND".equals(filter[0]) && rowWasSelected) ){
     								row.setSelected(false);
     							}
@@ -284,7 +299,7 @@ public class Sidacoja {
     						}
     					} else {
     						//cell value does not match
-    						if( "NE".equals(filter[2])){
+    						if( "NE".equals(filter[2]) || "NOTLIKE".equals(filter[2]) ){
     							if( ("IF".equals(filter[0]) || "OR".equals(filter[0])) || ("AND".equals(filter[0]) && rowWasSelected) ){
     								row.setSelected(true);
     							}
