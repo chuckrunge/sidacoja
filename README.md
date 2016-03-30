@@ -60,7 +60,8 @@ RELEASE NOTES - 0.1.1
 - Added support for LIKE in row filter (it saves typing in long strings for selection).
 
 
-PROCESSING
+PROCESSING OVERVIEW
+===================
 
 Each data type is processed by it's own input class, and each type has it's own output class.  A common format of rows and cells called RowCache is used in between.  A RowCache contains a collection of rows, and each row contains a collection of cells.
 
@@ -103,6 +104,8 @@ And, if you'd like to pull a subset, columns and values can be specified for row
 Also, the “fire” method returns a RowCache object which can be received by the invoking program.  A JSON or XML document can then be processed as a POJO, same as a spreadsheet or database table.
 
     	RowCache cache = sdjc.fire();
+		
+The row cache contains everything that was read from input, and can be used as a Java object.  A row cache is basically a collection of rows, each of which is a collection of columns.  
 
 
 An example using all of the above, both required and optional, is shown below.
@@ -169,10 +172,10 @@ JDBC EXAMPLE
 ADVANCED DATA SELECTION
 =======================
 
-Basic AND / OR logic is supported.  IF begins a new criterion.  AND ties a criterion to the previous one.  
-So AND will string multiple criteria together, and they all must be true.  OR begins another criterion.
+Basic AND / OR logic is supported.  IF begins a query.  AND ties a criterion to the previous one.  AND will string multiple criteria together, and they all must be true.  OR begins another criterion.
 
 Example:
+
     	sdjc.addFilter(new String[]{"IF", "Last Name","EQ","Smith"});
     	sdjc.addFilter(new String[]{"AND", "First Name","EQ","John"});
     	sdjc.addFilter(new String[]{"AND", "City","EQ","Johnsonville"});
@@ -180,12 +183,23 @@ Example:
     	sdjc.addFilter(new String[]{"AND", "First Name","EQ","James"});
     	sdjc.addFilter(new String[]{"AND", "City","EQ","Smithton"});
 
-EQ (equals) is the most specific way to identify rows, but NE (not equal) is also supported.  If excluding rows is simpler, NE is also available.
+EQ (equals) is the most specific way to identify rows, but NE (not equal) is also supported.  If excluding rows is simpler, use NE.
 
 Example:
+
     	sdjc.addFilter(new String[]{"IF", "Last Name","EQ","Smith"});
     	sdjc.addFilter(new String[]{"AND", "First Name","EQ","John"});
     	sdjc.addFilter(new String[]{"AND", "City","NE","Johnsonville"});
+
+LIKE is used for partial matches, or partially entered criteria.  A percent sign (%) is used to match the beginning or the end of a string. A percent sign on both ends means the criteria can appear anywhere. 
+
+Example:
+
+    	sdjc.addFilter(new String[]{"IF", "Last Name","LIKE","Smith%"});
+    	sdjc.addFilter(new String[]{"AND", "First Name","LIKE","%John%"});
+    	sdjc.addFilter(new String[]{"AND", "City","NOTLIKE","%ville"});
+
+NOTLIKE is the negative of LIKE.  Anything partially matching is omitted.
 
 		
 BATCH EXECUTION
