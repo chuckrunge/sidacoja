@@ -390,11 +390,11 @@ public class Sidacoja {
 		StringBuffer cleanSz = new StringBuffer();
 		cleanSz.append(testSz);
 		
-		if(testSz.startsWith("%") || testSz.startsWith("_")) {
+		if(testSz.startsWith("%") || testSz.startsWith("_") || testSz.startsWith("*") ) {
 			cleanSz.replace(0, cleanSz.length(), testSz.substring(1) );
 			startFlag = true;
 		}
-		if(testSz.endsWith("%") || testSz.endsWith("_")) {
+		if(testSz.endsWith("%") || testSz.endsWith("_") || testSz.endsWith("*") ) {
 			cleanSz.replace(0, cleanSz.length(), cleanSz.toString().substring(0,(cleanSz.length()-1) ) );
 			endFlag = true;
 		}

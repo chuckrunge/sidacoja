@@ -53,6 +53,9 @@ Please note that several jar files might be needed on the classpath to support t
 3) json-simple-1.1.1.jar for JSON files
 4) JDBC driver for your database
 
+RELEASE NOTES - 0.1.3
+- Added asterisk to support LIKE in windows batch files.
+
 RELEASE NOTES - 0.1.2
 - Added support for NOTLIKE in row filter.
 
@@ -191,7 +194,7 @@ Example:
     	sdjc.addFilter(new String[]{"AND", "First Name","EQ","John"});
     	sdjc.addFilter(new String[]{"AND", "City","NE","Johnsonville"});
 
-LIKE is used for partial matches, or partially entered criteria.  A percent sign (%) is used to match the beginning or the end of a string. A percent sign on both ends means the criteria can appear anywhere. 
+LIKE is used for partial matches, or partially entered criteria.  A percent sign (%) is used to match the beginning or the end of a string. A percent sign on both ends means the criteria can appear anywhere.  An asterisk (*) can be used in place of the percent sign. 
 
 Example:
 
