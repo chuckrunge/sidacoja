@@ -71,6 +71,15 @@ public class TargetDataJSON implements TargetData {
 		        	jFile.write(obj.toJSONString());
 		        	jFile.flush();
 		        	jFile.close();
+		        } else {
+		        	if(fileX.createNewFile()) {
+		        		FileWriter jFile = new FileWriter(file);
+		        		jFile.write(obj.toJSONString());
+		        		jFile.flush();
+		        		jFile.close();
+		        	} else {
+		        			console("Failed to create file "+file);
+		        		}
 		        }
 	 
 	        } catch (IOException e) {

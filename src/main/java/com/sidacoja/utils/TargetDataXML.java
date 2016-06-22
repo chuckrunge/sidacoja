@@ -2,6 +2,7 @@ package com.sidacoja.utils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
 
@@ -75,6 +76,14 @@ public class TargetDataXML {
 						console("output: "+file);
 						StreamResult result = new StreamResult(outFile); //new File(file)
 						transformer.transform(source, result);
+					} else {
+						boolean fileOK = outFile.createNewFile();
+						if(!fileOK) console("No XML file "+file+" was created");
+						else {
+							console("output: "+file);
+							StreamResult result = new StreamResult(outFile); //new File(file)
+							transformer.transform(source, result);							
+						}
 					}
 			 
 					// Output to string
@@ -89,6 +98,8 @@ public class TargetDataXML {
 					  pce.printStackTrace();
 				  } catch (TransformerException tfe) {
 					  tfe.printStackTrace();
+				  } catch (IOException ioe) {
+					  ioe.printStackTrace();
 				  }
 	   
 	   return xmlReq;

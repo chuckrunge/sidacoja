@@ -208,12 +208,29 @@ public class Sidacoja {
    		//sort on selected columns
    		if(sequencers != null) {
    			cache = sequence(cache, sequencers);
+   		} else { //if no selection, copy all rows
+   			List<Row> rows = cache.getList();
+   			for(Row row: rows) {
+   				row.setSelected(true);
+   			}
    		}
 
    		if(isCacheOnly()) {
    			return cache;
    		}
-
+   		if(columns == null || columns[0] == null || columns[0].length() == 0)
+   		{ //if no columns specified, copy all columns
+   			int i = 0;
+   			List<Row> rows = cache.getList();
+   			Row row = rows.get(0);
+   			List<Cell> cells = row.getList();
+   			columns = new String[cells.size()];
+   			for(Cell cell: cells) {
+   				console("found "+cell.getLabel());
+   				columns[i] = cell.getLabel();
+   				i++;
+   			}
+   		}
   		switch(outputType.toUpperCase()) {
    		case "CSV":
    			TargetDataCSV tdc = new TargetDataCSV(); 
