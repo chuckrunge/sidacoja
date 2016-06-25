@@ -1,22 +1,22 @@
 	package com.sidacoja.utils;
 
-	import java.awt.EventQueue;
-	import java.awt.event.ActionEvent;
-	import java.awt.event.ActionListener;
-	import java.io.File;
-	import java.io.IOException;
-	import java.io.InputStream;
-	import java.net.URL;
-	import java.util.ArrayList;
+import java.awt.EventQueue;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
-	import javax.swing.JFrame;
-	import javax.swing.JLabel;
-	import javax.swing.JTextField;
-	import javax.swing.JComboBox;
-	import javax.swing.JFileChooser;
-	import javax.swing.JButton;
-	import java.awt.Font;
-	import javax.swing.JOptionPane;  //showMessageDialog()
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;  //showMessageDialog()
+import javax.swing.JTextField;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.JTextArea;
 
 public class SidacojaFE implements ActionListener {
 
@@ -42,19 +42,22 @@ public class SidacojaFE implements ActionListener {
 		private JTextField textField_3;
 		private JTextField textField_4;
 		private JTextField textField_5;
-		JButton btnGo = new JButton("GO!");
-		JButton btnCancel = new JButton("Cancel");
-		JButton btnAdd = new JButton("Add");
-		JButton btnAdd_1 = new JButton("Add");
-		JButton btnClear = new JButton("Clear");
 		private JTextField textField_6;
 		private JTextField textField_7;
 		private JTextField textField_8;
 		private JTextField textField_9;
-		private ArrayList<String> columnArray = new ArrayList<String>();
-		private Common common = new Common();
+		private JTextArea textArea = new JTextArea();
+		private JButton btnGo = new JButton("GO!");
+		private JButton btnCancel = new JButton("Cancel");
+		private JButton btnAdd = new JButton("Add");
+		private JButton btnAdd_1 = new JButton("Add");
+		private JButton btnClear = new JButton("Clear");
+		private JButton btnClear_1 = new JButton("Clear");
+		private JButton btnReadColumns = new JButton("Read Columns");
 		private final JButton btnFileLocater = new JButton("Select File");
 		private final JButton btnFileLocater_1 = new JButton("Select File");
+		private ArrayList<String> columnArray = new ArrayList<String>();
+		private Common common = new Common();
 
 		/**
 		 * Launch the application.
@@ -102,7 +105,7 @@ public class SidacojaFE implements ActionListener {
 			frame.getContentPane().add(lblNewLabel_2);
 			
 			txtInputFileOr = new JTextField(); //file or url
-			txtInputFileOr.setText("C:\\users\\chuck\\java\\sidacoja\\resources\\testfile.csv"); //"input file or database url");
+			txtInputFileOr.setText("jdbc:hsqldb:hsql://localhost/mdb"); //"input file or database url");
 			txtInputFileOr.addActionListener(this);
 			txtInputFileOr.setBounds(68, 41, 430, 20);
 			frame.getContentPane().add(txtInputFileOr);
@@ -120,7 +123,7 @@ public class SidacojaFE implements ActionListener {
 			textField_1 = new JTextField();
 			textField_1.setText("for jdbc only");
 			textField_1.addActionListener(this);
-			textField_1.setBounds(278, 71, 110, 20);
+			textField_1.setBounds(265, 71, 114, 20);
 			frame.getContentPane().add(textField_1);
 			textField_1.setColumns(10);
 			
@@ -136,7 +139,7 @@ public class SidacojaFE implements ActionListener {
 			lblNewLabel_5.setBounds(185, 136, 72, 14);
 			frame.getContentPane().add(lblNewLabel_5);
 			
-			textField_2 = new JTextField("C:\\users\\chuck\\java\\sidacoja\\jsontest.json");
+			textField_2 = new JTextField("C:\\users\\chuck\\java\\sidacoja\\sidacoja.xml");
 			textField_2.addActionListener(this);
 			textField_2.setBounds(84, 108, 417, 20);
 			frame.getContentPane().add(textField_2);
@@ -154,7 +157,7 @@ public class SidacojaFE implements ActionListener {
 			textField_3 = new JTextField();
 			textField_3.setText("for jdbc only");
 			textField_3.addActionListener(this);
-			textField_3.setBounds(278, 133, 110, 20);
+			textField_3.setBounds(265, 133, 114, 20);
 			frame.getContentPane().add(textField_3);
 			textField_3.setColumns(10);
 			
@@ -209,17 +212,17 @@ public class SidacojaFE implements ActionListener {
 			
 			//JButton btnAdd = new JButton("Add");
 			btnAdd.addActionListener(this);
-			btnAdd.setBounds(99, 170, 72, 23);
+			btnAdd.setBounds(110, 171, 65, 23);
 			frame.getContentPane().add(btnAdd);
 			
 			textField_5 = new JTextField();
 			textField_5.addActionListener(this);
-			textField_5.setBounds(181, 173, 317, 20);
+			textField_5.setBounds(185, 174, 317, 20);
 			frame.getContentPane().add(textField_5);
 			textField_5.setColumns(10);
 			
 			textField_6 = new JTextField();
-			textField_6.setBounds(180, 205, 317, 20);
+			textField_6.setBounds(185, 209, 317, 20);
 			frame.getContentPane().add(textField_6);
 			textField_6.setColumns(10);
 			
@@ -308,7 +311,7 @@ public class SidacojaFE implements ActionListener {
 			
 			//JButton btnAdd_1 = new JButton("Add"); //sequencers
 			btnAdd_1.addActionListener(this);
-			btnAdd_1.setBounds(99, 204, 72, 22);
+			btnAdd_1.setBounds(110, 208, 65, 22);
 			frame.getContentPane().add(btnAdd_1);
 			
 			//JButton btnClear = new JButton("Clear");
@@ -324,32 +327,72 @@ public class SidacojaFE implements ActionListener {
 			btnFileLocater_1.setBounds(508, 107, 106, 23);
 			frame.getContentPane().add(btnFileLocater_1);
 			
+			//btnClear_1
+			btnClear_1.addActionListener(this);
+			btnClear_1.setBounds(525, 171, 89, 23);
+			frame.getContentPane().add(btnClear_1);
+			
+			//JButton btnReadColumns = new JButton("Read Columns");
+			btnReadColumns.addActionListener(this);
+			btnReadColumns.setBounds(469, 70, 145, 23);
+			frame.getContentPane().add(btnReadColumns);
+			
+			//JTextArea textArea = new JTextArea();
+			textArea.setBounds(68, 362, 546, 22);
+			frame.getContentPane().add(textArea);
+			
 		}
 		public void actionPerformed(ActionEvent evt) {
 			
-//			System.out.println(evt.getSource()+" "+evt.getActionCommand()+" "+evt.getWhen()); 
-			//System.out.println(evt.getSource());
-			//System.out.println(evt.getActionCommand());
-			//System.out.println(evt.getWhen());
-			
 			if (evt.getSource() == btnFileLocater) {
 	            JFileChooser openFile = new JFileChooser();
-	            openFile.showOpenDialog(null);
+	            openFile.setAcceptAllFileFilterUsed(false);
+	            FileNameExtensionFilter filter1 = new FileNameExtensionFilter("spreadsheets (xls)", "xls");
+	            openFile.addChoosableFileFilter(filter1);
+	            FileNameExtensionFilter filter2 = new FileNameExtensionFilter("comma-delimited files (csv)", "csv");
+	            openFile.addChoosableFileFilter(filter2);
+	            FileNameExtensionFilter filter3 = new FileNameExtensionFilter("xml documents (xml)", "xml");
+	            openFile.addChoosableFileFilter(filter3);
+	            FileNameExtensionFilter filter4 = new FileNameExtensionFilter("json documents (json)", "json");
+	            openFile.addChoosableFileFilter(filter4);
+	            openFile.showOpenDialog(frame);
 	            File inFile = openFile.getSelectedFile();
 	            if(inFile!=null) {
-	            	System.out.println(inFile.getAbsolutePath());
-	            	//if(txtInputFileOr.getText().length()==0) {
-	            	txtInputFileOr.setText(inFile.getAbsolutePath());  
+	            	//System.out.println(inFile.getAbsolutePath());
+	            	txtInputFileOr.setText(inFile.getAbsolutePath());
+	            	String type = txtInputFileOr.getText().substring(txtInputFileOr.getText().length()-4, txtInputFileOr.getText().length());
+	            	int typeLen = 0;
+	            	if(".".equals(type.substring(0, 1)))
+	            		typeLen = 3;
+	            	else
+	            		typeLen = 4;
+	            	comboBox.setSelectedItem(txtInputFileOr.getText().substring(txtInputFileOr.getText().length()-typeLen, txtInputFileOr.getText().length()).toUpperCase());
 	            }
 			} 
 			if (evt.getSource() == btnFileLocater_1) {
 	            JFileChooser openFile = new JFileChooser();
-	            openFile.showOpenDialog(null);
+	            openFile.setAcceptAllFileFilterUsed(false);
+	            FileNameExtensionFilter filter1 = new FileNameExtensionFilter("spreadsheets (xls)", "xls");
+	            openFile.addChoosableFileFilter(filter1);
+	            FileNameExtensionFilter filter2 = new FileNameExtensionFilter("comma-delimited files (csv)", "csv");
+	            openFile.addChoosableFileFilter(filter2);
+	            FileNameExtensionFilter filter3 = new FileNameExtensionFilter("xml documents (xml)", "xml");
+	            openFile.addChoosableFileFilter(filter3);
+	            FileNameExtensionFilter filter4 = new FileNameExtensionFilter("json documents (json)", "json");
+	            openFile.addChoosableFileFilter(filter4);
+	            openFile.showOpenDialog(frame);
 	            File inFile = openFile.getSelectedFile();
 	            if(inFile!=null) {
-	            	System.out.println(inFile.getAbsolutePath());
+	            	//System.out.println(inFile.getAbsolutePath());
 	            	//if(textField_2.getText().length()==0) {
-	            	textField_2.setText(inFile.getAbsolutePath());  
+	            	textField_2.setText(inFile.getAbsolutePath());
+	            	String type = textField_2.getText().substring(textField_2.getText().length()-4, textField_2.getText().length());
+	            	int typeLen = 0;
+	            	if(".".equals(type.substring(0, 1)))
+	            		typeLen = 3;
+	            	else
+	            		typeLen = 4;
+	            	comboBox_1.setSelectedItem(textField_2.getText().substring(textField_2.getText().length()-typeLen, textField_2.getText().length()).toUpperCase());
 	            } 
 			} 
 			if (evt.getSource() == btnAdd) {
@@ -380,14 +423,25 @@ public class SidacojaFE implements ActionListener {
 			}
 			if (evt.getSource() == btnGo) {
 				boolean valid = validateInput();
+				textArea.removeAll();
+				textArea.setText("");
 				if(valid)
 					prepareAndFire();
 				else
-					console("validation error - run aborted");
-				frame.dispose();
+					textArea.setText("validation error - run aborted");
+				//frame.dispose();
+			}
+			if (evt.getSource() == btnClear_1) {
+				textField_5.setText("");
+				textField_6.setText("");
+				addToDropDowns("RemoveAll");
 			}
 			if (evt.getSource() == btnClear) {
 				textField_6.setText("");
+			}
+			if (evt.getSource() == btnReadColumns) {
+				textArea.removeAll();
+				readInputForColumns();
 			}
 			if (evt.getSource() == btnCancel) {
 				frame.dispose();
@@ -397,7 +451,7 @@ public class SidacojaFE implements ActionListener {
 		public boolean validateInput() {
 			boolean result = true;
 			if(validFileOrUrl(txtInputFileOr.getText())) {
-				System.out.println(txtInputFileOr.getText());
+				System.out.println(" input "+txtInputFileOr.getText()+" is valid");
 				//JOptionPane.showMessageDialog(null, "file or url was valid");
 			} else {
 				System.out.println("file or url was NOT valid");
@@ -445,13 +499,71 @@ public class SidacojaFE implements ActionListener {
 		} //end validFileOrUrl
 
 		public void addToDropDowns(String szColumn) {
-			comboBox_3.addItem(szColumn);
-			//comboBox_5.addItem(szColumn); //sequencers chgd to bttnAdd_1
-			comboBox_7.addItem(szColumn);
-			comboBox_10.addItem(szColumn);
-			comboBox_13.addItem(szColumn);
-			
+			if("RemoveAll".equals(szColumn)) {
+				comboBox_3.removeAllItems();
+				comboBox_7.removeAllItems();
+				comboBox_10.removeAllItems();
+				comboBox_13.removeAllItems();
+				
+			} else {
+				comboBox_3.addItem(szColumn);
+				comboBox_7.addItem(szColumn);
+				comboBox_10.addItem(szColumn);
+				comboBox_13.addItem(szColumn);
+			}
 		}
+		
+		public void readInputForColumns() {
+
+			Sidacoja sdcj = new Sidacoja();
+	    	sdcj.input(txtInputFileOr.getText());
+	    	sdcj.inputType((String) comboBox.getSelectedItem());
+
+//	    	console("input "+txtInputFileOr.getText() +" "+(String) comboBox.getSelectedItem() +" "+textField_1.getText() );
+	    	
+	    	if(!common.isNullOrEmpty(textField_1.getText())) {
+	    		sdcj.setTable(textField_1.getText());
+	    	}
+	    	
+	    	sdcj.setCacheOnly(true);
+	    	console(sdcj.toString());
+	    	RowCache cache = new RowCache();
+	    	try {
+	    		cache = sdcj.fire();
+	    	} catch( Exception e) {
+	    		console(e.getMessage() );
+	    		e.printStackTrace();
+	    	}
+	    	//console("returned: "+sdcj.getReturnString());	    	
+	    	console("output selected: "+cache.countSelected());
+	    	textArea.removeAll();
+//	    	textArea.append("returned: "+sdcj.getReturnString());
+	    	textArea.setText("  rows selected for output: "+cache.countSelected());
+	    	
+	    	List<Row> rows = cache.getList();
+	    	//rows.isEmpty()
+			List<Cell> cells = rows.get(0).getList();
+   			StringBuffer szColumn = new StringBuffer();
+   			int nbrCols = 0;
+   			for(Cell cell: cells) {
+   				szColumn.replace(0, cell.getLabel().length(), cell.getLabel());
+   				nbrCols++;
+   				console("found column "+szColumn.toString());
+				columnArray.add(szColumn.toString());
+				addToDropDowns(szColumn.toString());
+				if(textField_5.getText().isEmpty()) {
+					textField_5.setText(textField_5.getText()+szColumn.toString());
+					textField_6.setText(textField_6.getText()+szColumn.toString());
+				} else {
+					textField_5.setText(textField_5.getText()+","+szColumn.toString());
+					textField_6.setText(textField_6.getText()+","+szColumn.toString());
+				}
+   			}
+
+   			textArea.append("  columns selected: "+nbrCols);
+
+		}
+		
 		public void prepareAndFire() {
 	    	//final String DB_URL = "jdbc:hsqldb:hsql://localhost:9001/mdb";
 	    	//final String USER = "sa";
@@ -461,11 +573,7 @@ public class SidacojaFE implements ActionListener {
 	    	sdcj.input(txtInputFileOr.getText());
 	    	sdcj.inputType((String) comboBox.getSelectedItem());
 	    	//sdcj.setTable(textField_1.getText()); //Employees
-	    	console("input "+
-	    	    	txtInputFileOr.getText() +" "+
-	    	    	(String) comboBox.getSelectedItem() +" "+
-	    	    	textField_1.getText()
-	    			);
+	    	//console("input "+txtInputFileOr.getText() +" "+(String) comboBox.getSelectedItem() +" "+textField_1.getText());
 	    	if(!common.isNullOrEmpty(textField_1.getText())) {
 	    		sdcj.setTable(textField_1.getText());
 	    	}
@@ -513,11 +621,7 @@ public class SidacojaFE implements ActionListener {
 	    	
 	    	sdcj.output(textField_2.getText()); //"no file required");	//("./sidacoja.xml");
 	    	sdcj.outputType((String) comboBox_1.getSelectedItem());
-	    	console("output "+
-	    	    	textField_2.getText() +" "+
-	    	    	(String) comboBox_1.getSelectedItem() +" "+
-	    	    	textField_3.getText()
-	    	);
+	    	//console("output "+textField_2.getText() +" "+(String) comboBox_1.getSelectedItem() +" "+textField_3.getText());
 	    	if(!common.isNullOrEmpty(textField_3.getText()))
 	    		sdcj.setOutputTable(textField_3.getText());
 	    	sdcj.setCacheOnly(false);
@@ -529,10 +633,11 @@ public class SidacojaFE implements ActionListener {
 	    		console(e.getMessage() );
 	    		e.printStackTrace();
 	    	}
-	    	console("returned: "+sdcj.getReturnString());
-	    	
+	    	//console("returned: "+sdcj.getReturnString());	    	
 	    	console("output selected: "+cache.countSelected());
-
+	    	textArea.removeAll();
+	    	//textArea.append("returned: "+sdcj.getReturnString());
+	    	textArea.append("output selected: "+cache.countSelected());
 		}
 		   public static void console(String sz) {
 		    	System.out.println(sz);

@@ -63,7 +63,12 @@ public class TargetDataJDBC  implements TargetData {
 		        		if("String".equals(cell.getDataType())) {
 		        			createTable = createTable.concat("Varchar(254)");}
 		        		else {
-			        		createTable = createTable.concat(cell.getDataType());}
+			        		if(common.isNullOrEmpty(cell.getDataType() ) ) {
+			        			createTable = createTable.concat("Varchar(254)");
+			        		} else {
+			        			createTable = createTable.concat(cell.getDataType() );
+			        		}
+		        		}
 	        		}
 //	        		createTable = createTable.concat(cell.getDataType());
 	        	} //end if
@@ -97,11 +102,13 @@ public class TargetDataJDBC  implements TargetData {
         			if("Date".equals( cell.getDataType() ) ) {
         				values.add("'"+cell.getValue()+"'");
         			}
+        			if(cell.getDataType()==null) console(cell.getLabel()+" is null");
+        			else console(cell.getLabel()+" "+cell.getDataType());
         			if(cell.getDataType().contains("VARCHAR")) {
         				values.add("'"+cell.getValue()+"'");
         			}
         			if("String".equals(cell.getDataType()) ) {
-        				if(cell.getValue().length()==0) {
+        				if(cell.getValue()==null || cell.getValue().length()==0) {
         					//console("TargetDataJDBC found empty cell");
         					values.add("'.'");
         				} else {
