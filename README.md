@@ -53,6 +53,9 @@ Please note that several jar files might be needed on the classpath to support t
 3) json-simple-1.1.1.jar for JSON files
 4) JDBC driver for your database
 
+RELEASE NOTES - 0.1.4
+- Added UI for desktop.  See README.doc for details.
+
 RELEASE NOTES - 0.1.3
 - Added asterisk to support LIKE in windows batch files.
 

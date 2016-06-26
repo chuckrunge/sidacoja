@@ -121,9 +121,8 @@ public class SidacojaFE implements ActionListener {
 			frame.getContentPane().add(comboBox);
 			
 			textField_1 = new JTextField();
-			textField_1.setText("for jdbc only");
 			textField_1.addActionListener(this);
-			textField_1.setBounds(265, 71, 114, 20);
+			textField_1.setBounds(265, 72, 114, 22);
 			frame.getContentPane().add(textField_1);
 			textField_1.setColumns(10);
 			
@@ -155,7 +154,6 @@ public class SidacojaFE implements ActionListener {
 			frame.getContentPane().add(comboBox_1);
 			
 			textField_3 = new JTextField();
-			textField_3.setText("for jdbc only");
 			textField_3.addActionListener(this);
 			textField_3.setBounds(265, 133, 114, 20);
 			frame.getContentPane().add(textField_3);
@@ -341,11 +339,19 @@ public class SidacojaFE implements ActionListener {
 			textArea.setBounds(68, 362, 546, 22);
 			frame.getContentPane().add(textArea);
 			
+			JLabel lblJdbcOnly = new JLabel("(jdbc only)");
+			lblJdbcOnly.setBounds(389, 74, 70, 20);
+			frame.getContentPane().add(lblJdbcOnly);
+			
+			JLabel lbljdbcOnly = new JLabel("(jdbc only)");
+			lbljdbcOnly.setBounds(389, 136, 70, 14);
+			frame.getContentPane().add(lbljdbcOnly);
+			
 		}
 		public void actionPerformed(ActionEvent evt) {
 			
 			if (evt.getSource() == btnFileLocater) {
-	            JFileChooser openFile = new JFileChooser();
+	            JFileChooser openFile = new JFileChooser(txtInputFileOr.getText());
 	            openFile.setAcceptAllFileFilterUsed(false);
 	            FileNameExtensionFilter filter1 = new FileNameExtensionFilter("spreadsheets (xls)", "xls");
 	            openFile.addChoosableFileFilter(filter1);
@@ -370,7 +376,7 @@ public class SidacojaFE implements ActionListener {
 	            }
 			} 
 			if (evt.getSource() == btnFileLocater_1) {
-	            JFileChooser openFile = new JFileChooser();
+	            JFileChooser openFile = new JFileChooser(textField_2.getText());
 	            openFile.setAcceptAllFileFilterUsed(false);
 	            FileNameExtensionFilter filter1 = new FileNameExtensionFilter("spreadsheets (xls)", "xls");
 	            openFile.addChoosableFileFilter(filter1);
@@ -458,12 +464,12 @@ public class SidacojaFE implements ActionListener {
 				JOptionPane.showMessageDialog(null, "file or url was NOT valid");
 				result = false;
 			}
-			if(!"for jdbc only".equals(textField_1.getText()) && 
+			if(!textField_1.getText().isEmpty() && 
 					!"JDBC".equals(comboBox.getSelectedItem()) )  {
 						JOptionPane.showMessageDialog(null, "Select JDBC for input table");
 						result = false;
 			}
-			if(!"for jdbc only".equals(textField_3.getText()) && 
+			if(!textField_3.getText().isEmpty() && 
 					!"JDBC".equals(comboBox_1.getSelectedItem()) )  {
 						JOptionPane.showMessageDialog(null, "Select JDBC for ouput table");
 						result = false;

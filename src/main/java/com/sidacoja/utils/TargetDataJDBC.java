@@ -102,8 +102,11 @@ public class TargetDataJDBC  implements TargetData {
         			if("Date".equals( cell.getDataType() ) ) {
         				values.add("'"+cell.getValue()+"'");
         			}
-        			if(cell.getDataType()==null) console(cell.getLabel()+" is null");
-        			else console(cell.getLabel()+" "+cell.getDataType());
+        			
+        			if(cell.getDataType()==null) { 
+        				cell.setDataType("VARCHAR(254)");
+        			}
+        			
         			if(cell.getDataType().contains("VARCHAR")) {
         				values.add("'"+cell.getValue()+"'");
         			}

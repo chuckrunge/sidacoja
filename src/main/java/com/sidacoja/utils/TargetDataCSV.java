@@ -43,20 +43,29 @@ public class TargetDataCSV implements TargetData{
         	try{
         	if(firstIteration) {
         		for(String label:labels) {
+        			int i = 0;
         			if(label.isEmpty() || label  == null) {
         				bw.write("*,");
         			} else {
-        				bw.write(label+",");
+                		if( i == (labels.size()-1) )
+                			bw.write(label);
+                		else
+                			bw.write(label+",");
         			}
+        			i++;
         		}
         		System.out.println("");
         		bw.newLine();
         		firstIteration = false;
         	} 
         	if(row.isSelected()) {
+        		int i=0;
             	for(String value:values) {
-            		//System.out.print(value+",");
-            		bw.write(value+",");
+            		if( i == (values.size()-1) )
+            			bw.write(value);
+            		else
+            			bw.write(value+",");
+            		i++;
             	}
         		bw.newLine();
         	}
