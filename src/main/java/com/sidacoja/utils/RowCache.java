@@ -79,7 +79,7 @@ public class RowCache {
         	List<Cell> listCells = row.getList();
         	console(listCells.size()+" cells in cache row "+row.getNumber());
         	for(Cell cell: listCells) {
-        		console(row.getNumber()+":"+cell.getNumber()+" "+cell.getLabel()+" "+cell.getValue()+" "+cell.getDataType());
+        		console(row.isSelected()+":"+row.getNumber()+":"+cell.getNumber()+" "+cell.getLabel()+" "+cell.getValue()+" "+cell.getDataType());
         	}
         }
 	}

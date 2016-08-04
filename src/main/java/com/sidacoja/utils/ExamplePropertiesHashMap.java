@@ -1,11 +1,10 @@
 package com.sidacoja.utils;
 
-// import for standalone use - com.sidacoja.utils.*;
-import java.util.List;
 import java.util.HashMap;
 import java.util.Iterator;
+// import for standalone use - com.sidacoja.utils.*;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 /*
 	read one row of properties from xml into a hashmap
 */

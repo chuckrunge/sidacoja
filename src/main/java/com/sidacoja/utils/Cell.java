@@ -2,9 +2,9 @@ package com.sidacoja.utils;
 
 public class Cell {
 	
-	Cell(){}
+	public Cell(){}
 	
-	Cell(int number, String label, String value, String dataType){
+	public Cell(int number, String label, String value, String dataType){
 		this.number = number;
 		this.label = label;
 		this.value = value;

@@ -33,6 +33,7 @@ public class AppTest3
 
     /**
      * test AND / OR selection against CSV
+     * specify columns and use default sequence
      * and verify sort on first row
      */
     
@@ -46,9 +47,9 @@ public class AppTest3
     			"First Name","Last Name","UserID","Date"
     	});
 
-    	sdcj.sequence(new String[] {
-    	    	"Last Name","First Name"
-    	});
+    	//sdcj.sequence(new String[] {
+    	//    	"Last Name","First Name"
+    	//});
     	       	
     	sdcj.addFilter(new String[]{"OR","Date","EQ","11/14/2015"});
 
@@ -73,12 +74,11 @@ public class AppTest3
 
     	//retrieve first selected row to verify sort sequence
     	List<Row> rows = cache.getList();
-    	for(Row row: rows) {
-    		if(row.isSelected()) {
-    	    	List<Cell> cells = row.getList();
-    	    	assertTrue("Darius".equals(cells.get(0).getValue() ));  
-    	    	break;
-    		}
+    	Row row = rows.get(0);
+    	if(row.isSelected()) {
+    	   	List<Cell> cells = row.getList();
+    	   	console("checking01: "+cells.get(0).getValue());
+    	   	assertTrue("Chris".equals(cells.get(0).getValue() ));  
     	}
     	
     	//number of data rows equals number of rows in cache
@@ -95,7 +95,8 @@ public class AppTest3
         
     }
     /*
-     * test cacheOnly run - skip output step
+     * test cacheOnly run - skip output step (return cache only)
+     * use default columns and specify sequence
      */
     public void testApp02()
     {
@@ -137,13 +138,12 @@ public class AppTest3
 
     	//retrieve first selected row to verify sort sequence
     	List<Row> rows = cache.getList();
-    	for(Row row: rows) {
-    		if(row.isSelected()) {
-    	    	List<Cell> cells = row.getList();
-    	    	assertTrue("Darius".equals(cells.get(0).getValue() ));  
-    	    	break;
-    		}
-    	}
+    	Row row = rows.get(0);
+   		if(row.isSelected()) {
+   	    	List<Cell> cells = row.getList();
+   	    	console("checking02: "+ cells.get(0).getValue());
+   	    	assertTrue("Darius".equals(cells.get(0).getValue() ));  
+   		}
     	
     	//number of data rows equals number of rows in cache
         assertTrue(9 == cache.getList().size() );
@@ -160,6 +160,7 @@ public class AppTest3
     }
     /*
      * test cacheOnly for NE condition
+     * using default columns and default sequence
      */
     public void testApp03()
     {
@@ -177,7 +178,7 @@ public class AppTest3
     	//    	"Last Name","First Name"
     	//});
     	       	
-    	sdcj.addFilter(new String[]{"OR","Date","EQ","11/14/2015"});
+    	sdcj.addFilter(new String[]{"IF","Date","EQ","11/14/2015"});
 
     	sdcj.addFilter(new String[]{"OR","Date","EQ","11/11/2011"});
     	
@@ -202,10 +203,11 @@ public class AppTest3
     	}
     	
     	//number of data rows equals number of rows in cache
-        //console("cache size: "+cache.getList().size());
+        console("cache size: "+cache.getList().size());
         assertTrue(9 == cache.getList().size() );
 
         //number of data rows written equals number of rows selected
+        console("selected: "+cache.countSelected());
         assertTrue(5 == cache.countSelected() );
         
         //number of columns selected for output
@@ -218,6 +220,14 @@ public class AppTest3
 
 public void console(String sz) {
 	System.out.println(sz);
+}
+
+public void displayRows(Sidacoja sdcj, RowCache cache) {
+	sdcj.displayRowList(cache.getList());
+}
+
+public void displayCache(RowCache cache) {
+	cache.display();
 }
 
 } //end class

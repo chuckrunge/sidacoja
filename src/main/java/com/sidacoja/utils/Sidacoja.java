@@ -205,33 +205,68 @@ public class Sidacoja {
    			cache = selectAndFilter(cache, filters);
    		}
    		
-   		//sort on selected columns
-   		if(sequencers != null) {
-   			cache = sequence(cache, sequencers);
-   		} else { //if no selection, copy all rows
-   			List<Row> rows = cache.getList();
-   			for(Row row: rows) {
-   				row.setSelected(true);
-   			}
-   		}
-
-   		if(isCacheOnly()) {
-   			return cache;
-   		}
    		if(columns == null || columns[0] == null || columns[0].length() == 0)
    		{ //if no columns specified, copy all columns
    			int i = 0;
    			List<Row> rows = cache.getList();
-   			Row row = rows.get(0);
+   			Row row = rows.get(0); //first row has labels
    			List<Cell> cells = row.getList();
    			columns = new String[cells.size()];
+   			sequencers = new String[cells.size()];
    			for(Cell cell: cells) {
-   				console("found "+cell.getLabel());
+   				console("found column: "+cell.getLabel());
    				columns[i] = cell.getLabel();
+   				sequencers[i] = cell.getLabel();
    				i++;
    			}
+			//if no selection, copy all rows
+   			//List<Row> rows = cache.getList();
+	   		//for(Row rown: rows) {
+	   		//	rown.setSelected(true);
+	   		//}
    		}
-  		switch(outputType.toUpperCase()) {
+ 
+   		if(sequencers == null || sequencers[0] == null || sequencers[0].length() == 0) {
+   			int i = 0;
+   			List<Row> rows = cache.getList();
+   			Row row = rows.get(0); //first row has labels
+   			List<Cell> cells = row.getList();
+   			sequencers = new String[cells.size()];
+   			for(i=0;i<columns.length;i++) {
+   				console("found sequencer: "+columns[i]);
+   				sequencers[i] = columns[i];
+   			}
+   			//for(Cell cell: cells) {
+   			//	console("found "+cell.getLabel());
+   			//	sequencers[i] = cell.getLabel();
+   			//	i++;
+   			//}
+			//if no selection, copy all rows
+   			if(filters == null) {
+   				console("no filters found - default to copy all");
+   				//for(Row rown: rows) {
+   				//	rown.setSelected(true);
+   				//}
+   			}
+   	   		//if(sequencers != null) {
+   			cache = sequence(cache, sequencers);
+   	   	} else {
+   	   		//sort on selected columns
+   	   		//if(sequencers != null) {
+   			cache = sequence(cache, sequencers);
+   		} 
+   		//else { //if no selection, copy all rows
+   		//	List<Row> rows = cache.getList();
+   		//	for(Row row: rows) {
+   		//		row.setSelected(true);
+   		//	}
+   		//}
+
+   		if(isCacheOnly()) {
+   			return cache;
+   		}
+
+   		switch(outputType.toUpperCase()) {
    		case "CSV":
    			TargetDataCSV tdc = new TargetDataCSV(); 
    			status = tdc.processOutput(cache, columns, output);
